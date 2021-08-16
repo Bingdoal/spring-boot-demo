@@ -1,0 +1,29 @@
+logging:
+  level:
+    root: INFO
+  pattern:
+    console: "%clr(%d{dd HH:mm:ss.SSS}){cyan} %clr(%-5level) %clr([%8.15thread]){cyan} %clr(%-120.120(%logger{100}.%method %line)){yellow} %n%clr(%m){faint}%n"
+
+server:
+  port: 8080
+
+spring:
+  main:
+    web-application-type: none
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    password: 123456
+    username: postgres
+  jpa:
+    database: POSTGRESQL
+    show-sql: false
+    open-in-view: true
+    properties:
+      hibernate:
+        default_schema: public
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        hbm2ddl:
+          auto: update
+        temp:
+          use_jdbc_metadata_defaults: false

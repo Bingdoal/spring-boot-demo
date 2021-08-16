@@ -1,0 +1,9 @@
+target/
+.apt_generated/
+.idea/
+*.iml
+*.jar
+*.zip
+*.7z
+*.exe
+*.log
