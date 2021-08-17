@@ -57,7 +57,7 @@ public class AppConfig {
         return mapper;
     }
 
-    class StringTrimmerModule extends SimpleModule {
+    static class StringTrimmerModule extends SimpleModule {
         private static final long serialVersionUID = 1L;
 
         public StringTrimmerModule() {

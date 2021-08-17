@@ -1,17 +1,17 @@
-package springboot.test.model;
+package springboot.test.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @Data
-@Table(name = "user")
-public class UserEntity extends EntityBase{
+public class User extends EntityBase {
     private String name;
+    @JsonIgnore
     private String password;
     private String description;
 }

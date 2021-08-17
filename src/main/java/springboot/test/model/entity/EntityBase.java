@@ -1,4 +1,4 @@
-package springboot.test.model;
+package springboot.test.model.entity;
 
 
 import lombok.Data;
