@@ -1,10 +1,7 @@
 package springboot.test.model.dao;
 
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.core.types.dsl.StringPath;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.querydsl.binding.SingleValueBinding;
@@ -12,8 +9,6 @@ import springboot.test.model.entity.QUser;
 import springboot.test.model.entity.User;
 
 public interface UserDao extends DaoBase<User, Long>, QuerydslBinderCustomizer<QUser> {
-
-    Page<User> findAll(Predicate predicate, Pageable pageable);
 
     @Override
     default void customize(final QuerydslBindings bindings, final QUser qEntity) {
