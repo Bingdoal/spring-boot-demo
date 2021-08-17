@@ -28,9 +28,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(ex.getCode()).body(jsonNode);
     }
 
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(final Exception ex, final Object body, final HttpHeaders headers,
+                                                             final HttpStatus status, final WebRequest request) {
+        if (ex instanceof MethodArgumentNotValidException) {
+            return handleArgumentInvalid((MethodArgumentNotValidException) ex);
+        }
+        ex.printStackTrace();
+        JsonNode jsonNode = objectMapper.createObjectNode().put("message", "所輸入的參數資料型別不正確或是某些參數遺漏了。");
+        return ResponseEntity.status(status).body(jsonNode);
+    }
+
     // 資料驗證錯誤處理
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleArgumentInvalid(MethodArgumentNotValidException ex) {
+    private ResponseEntity<Object> handleArgumentInvalid(MethodArgumentNotValidException ex) {
         StringBuilder message = new StringBuilder();
         for (ObjectError allError : ex.getBindingResult().getAllErrors()) {
             message.append(allError);
@@ -43,13 +53,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         JsonNode jsonNode = objectMapper.createObjectNode().put("message", "所輸入的參數資料型別不正確或是某些參數遺漏了。例如遺漏了本該輸入的 JSON 格式內容。");
 
         return ResponseEntity.status(400).body(jsonNode);
-    }
-
-    @Override
-    protected ResponseEntity<Object> handleExceptionInternal(final Exception ex, final Object body, final HttpHeaders headers,
-                                                             final HttpStatus status, final WebRequest request) {
-        ex.printStackTrace();
-        JsonNode jsonNode = objectMapper.createObjectNode().put("message", "所輸入的參數資料型別不正確或是某些參數遺漏了。");
-        return ResponseEntity.status(status).body(jsonNode);
     }
 }
