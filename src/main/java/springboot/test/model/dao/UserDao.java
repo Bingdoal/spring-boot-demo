@@ -14,7 +14,7 @@ public interface UserDao extends DaoBase<User, Long>, QuerydslBinderCustomizer<Q
     default void customize(final QuerydslBindings bindings, final QUser qEntity) {
         // 自定義綁定關係，使用白名单模式 (true)，只有明確列出的欄位才適用於搜尋
         bindings.excludeUnlistedProperties(true);
-        bindings.including(qEntity.name, qEntity.description);
+        bindings.including(qEntity.name, qEntity.email);
         bindings.bind(String.class).first((SingleValueBinding<StringPath, String>) StringExpression::containsIgnoreCase);
     }
 }

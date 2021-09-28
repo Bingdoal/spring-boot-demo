@@ -21,8 +21,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private ObjectMapper objectMapper;
 
     // 自訂 Exception 錯誤處理
-    @ExceptionHandler(RequestException.class)
-    public ResponseEntity<?> handleRequestException(RequestException ex) {
+    @ExceptionHandler(StatusException.class)
+    public ResponseEntity<?> handleRequestException(StatusException ex) {
         ex.printStackTrace();
         JsonNode jsonNode = objectMapper.createObjectNode().put("message", ex.getMessage());
         return ResponseEntity.status(ex.getCode()).body(jsonNode);
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 + "\n 輸入参数名稱：" + ex.getBindingResult().getObjectName()
                 + "\n 錯誤的参数值：" + ex.getBindingResult().getTarget()
                 + "\n 錯誤訊息：" + message);
-        JsonNode jsonNode = objectMapper.createObjectNode().put("message", "所輸入的參數資料型別不正確或是某些參數遺漏了。例如遺漏了本該輸入的 JSON 格式內容。");
+        JsonNode jsonNode = objectMapper.createObjectNode().put("message", "所輸入的參數資料型別不正確或是某些參數遺漏了。");
 
         return ResponseEntity.status(400).body(jsonNode);
     }

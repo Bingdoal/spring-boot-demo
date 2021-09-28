@@ -5,11 +5,11 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class RequestException extends Exception {
+public class StatusException extends Exception {
     private int code;
     private String message;
 
-    public RequestException(int httpStatus, String message) {
+    public StatusException(int httpStatus, String message) {
         super(message);
         this.message = message;
         this.code = httpStatus;

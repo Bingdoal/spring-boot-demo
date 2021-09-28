@@ -1,13 +1,27 @@
+# ========================
+#  Logger
+# =======================
 logging:
   level:
     root: INFO
+    com.zaxxer.hikari: WARN
+    org.hibernate: WARN
+    org.flywaydb.core: WARN
+    org.apache.catalina: WARN
   pattern:
     console: "%clr(%d{dd HH:mm:ss.SSS}){cyan} %clr(%-5level) %clr([%8.15thread]){cyan} %clr(%-120.120(%logger{100}.%method %line)){yellow} %n%clr(%m){faint}%n"
 
 server:
   port: 8080
+  version: 1.0.0
+  name: spring-demo
 
 spring:
+  main:
+    web-application-type: servlet
+  # ========================
+  #  Query Pageable
+  # =======================
   data:
     web:
       pageable:
@@ -20,22 +34,29 @@ spring:
         size-parameter: size         # Page size parameter name.
         sort:
           sort-parameter: id         # Sort parameter name.
-  main:
-    web-application-type: servlet
+  # ========================
+  #  Database
+  # =======================
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres
-    password: 123456
+    url: jdbc:postgresql://localhost:5432/mydb?useUnicode=true&characterEncoding=utf-8
     username: postgres
+    password: 123456
   jpa:
     database: POSTGRESQL
     show-sql: false
     open-in-view: true
     properties:
       hibernate:
-        default_schema: public
+        default_schema: testt
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        hbm2ddl:
-          auto: update
         temp:
           use_jdbc_metadata_defaults: false
+  # =========================
+  #  Flyway
+  # ==========================
+  flyway:
+    baseline-version: 1.0
+    enabled: false
+
+

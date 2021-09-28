@@ -1,32 +1,45 @@
 package springboot.test.service;
 
-import com.querydsl.core.types.Predicate;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import springboot.test.dto.user.UserDco;
+import springboot.test.dto.user.UserDuo;
+import springboot.test.exception.StatusException;
 import springboot.test.model.dao.UserDao;
-import springboot.test.model.entity.QUser;
 import springboot.test.model.entity.User;
+
+import java.util.Optional;
 
 @Service
 public class UserDaoService {
     @Autowired
     private UserDao userDao;
-    @Autowired
-    private JPAQueryFactory queryFactory;
 
-    private Page<User> findNameContain(String name, Pageable pageable) {
-        Predicate predicate = QUser.user.name.contains(name);
-        return userDao.findAll(predicate, pageable);
+    public User create(UserDco userDco) {
+        User user = new User();
+        user.setName(userDco.getName());
+        user.setPassword(userDco.getPassword());
+        user.setEmail(userDco.getEmail());
+        return userDao.save(user);
     }
 
-    private User findBy(String name, String password) {
-        return queryFactory
-                .selectFrom(QUser.user)
-                .where(
-                        QUser.user.name.eq(name).eq(QUser.user.password.eq(password))
-                ).fetchFirst();
+    public User modify(Long userId, UserDuo userDuo) throws StatusException {
+        Optional<User> optUser = userDao.findById(userId);
+        User user;
+        if (optUser.isPresent()) {
+            user = optUser.get();
+        } else {
+            throw new StatusException(400, "UserId " + userId + " do not exist.");
+        }
+        if (userDuo.getName() != null) {
+            user.setName(userDuo.getName());
+        }
+        if (userDuo.getPassword() != null) {
+            user.setPassword(userDuo.getPassword());
+        }
+        if (userDuo.getEmail() != null) {
+            user.setEmail(userDuo.getEmail());
+        }
+        return userDao.save(user);
     }
 }
