@@ -1,9 +1,7 @@
 package springboot.test.filter;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.filter.OncePerRequestFilter;
-import springboot.test.utils.HeaderInfo;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

@@ -3,11 +3,11 @@ package springboot.test.exception;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,7 +22,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     // 自訂 Exception 錯誤處理
     @ExceptionHandler(StatusException.class)
-    public ResponseEntity<?> handleRequestException(StatusException ex) {
+    public ResponseEntity<?> handleStatusException(StatusException ex) {
         ex.printStackTrace();
         JsonNode jsonNode;
         if (ex.getJsonNode() != null) {
@@ -33,13 +33,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(ex.getCode()).body(jsonNode);
     }
 
+    @ExceptionHandler(PSQLException.class)
+    public ResponseEntity<?> handleSQLException(PSQLException ex) {
+        log.error("PSQLException: {}", ex.getMessage(), ex);
+        JsonNode jsonNode = objectMapper.createObjectNode().put("message", ex.getServerErrorMessage().getDetail());
+        return ResponseEntity.status(400).body(jsonNode);
+    }
+
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(final Exception ex, final Object body, final HttpHeaders headers,
                                                              final HttpStatus status, final WebRequest request) {
         if (ex instanceof MethodArgumentNotValidException) {
             return handleArgumentInvalid((MethodArgumentNotValidException) ex);
         }
-        ex.printStackTrace();
+        log.error("Error: ", ex);
         JsonNode jsonNode = objectMapper.createObjectNode().put("message", ex.getLocalizedMessage());
         return ResponseEntity.status(status).body(jsonNode);
     }

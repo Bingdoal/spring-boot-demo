@@ -162,6 +162,7 @@
                 <configuration>
                     <fork>true</fork>
                     <addResources>true</addResources>
+                    <jvmArguments>-Dfile.encoding=UTF8</jvmArguments>
                 </configuration>
             </plugin>
             <!--QueryDSL-->
