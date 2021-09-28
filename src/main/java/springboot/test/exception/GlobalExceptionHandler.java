@@ -23,7 +23,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // 自訂 Exception 錯誤處理
     @ExceptionHandler(StatusException.class)
     public ResponseEntity<?> handleStatusException(StatusException ex) {
-        ex.printStackTrace();
+        log.error("StatusException: {}", ex.getMessage(), ex);
         JsonNode jsonNode;
         if (ex.getJsonNode() != null) {
             jsonNode = ex.getJsonNode();
