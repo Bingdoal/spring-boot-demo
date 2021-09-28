@@ -45,13 +45,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
             } catch (Exception e) {
-                log.error("validateToken: {}", e.getMessage(), e);
+                log.error("validateToken: {}", e.getMessage());
             }
         }
         try {
             chain.doFilter(req, res);
         } catch (final AccessDeniedException e) {
-            log.error("AccessDeniedException: {}", e.getMessage(), e);
+            log.error("AccessDeniedException: {}", e.getMessage());
         }
     }
 }

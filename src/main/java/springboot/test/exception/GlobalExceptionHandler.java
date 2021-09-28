@@ -46,17 +46,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     // 資料驗證錯誤處理
     private ResponseEntity<Object> handleArgumentInvalid(MethodArgumentNotValidException ex) {
-        StringBuilder message = new StringBuilder();
-        for (ObjectError allError : ex.getBindingResult().getAllErrors()) {
-            message.append(allError);
-        }
+        String defaultMessage = ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();
         log.error("\t[Exception] 輸入參數的資料型別不正確。"
                 + "\n 調用方法：" + ex.getParameter().getDeclaringClass() + "." + ex.getParameter().getMethod().getName()
                 + "\n 輸入参数名稱：" + ex.getBindingResult().getObjectName()
                 + "\n 錯誤的参数值：" + ex.getBindingResult().getTarget()
-                + "\n 錯誤訊息：" + message);
-        JsonNode jsonNode = objectMapper.createObjectNode().put("message", "所輸入的參數資料型別不正確或是某些參數遺漏了。");
+                + "\n 錯誤訊息：" + ex.getLocalizedMessage());
 
+        JsonNode jsonNode = objectMapper.createObjectNode().put("message", defaultMessage);
         return ResponseEntity.status(400).body(jsonNode);
     }
 }
