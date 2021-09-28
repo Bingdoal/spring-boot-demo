@@ -40,7 +40,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             return handleArgumentInvalid((MethodArgumentNotValidException) ex);
         }
         ex.printStackTrace();
-        JsonNode jsonNode = objectMapper.createObjectNode().put("message", "所輸入的參數資料型別不正確或是某些參數遺漏了。");
+        JsonNode jsonNode = objectMapper.createObjectNode().put("message", ex.getLocalizedMessage());
         return ResponseEntity.status(status).body(jsonNode);
     }
 
