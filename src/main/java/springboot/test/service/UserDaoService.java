@@ -1,6 +1,7 @@
 package springboot.test.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import springboot.test.dto.user.UserDco;
 import springboot.test.dto.user.UserDuo;
@@ -14,11 +15,13 @@ import java.util.Optional;
 public class UserDaoService {
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public User create(UserDco userDco) {
         User user = new User();
         user.setName(userDco.getName());
-        user.setPassword(userDco.getPassword());
+        user.setPassword(passwordEncoder.encode(userDco.getPassword()));
         user.setEmail(userDco.getEmail());
         return userDao.save(user);
     }
@@ -35,7 +38,7 @@ public class UserDaoService {
             user.setName(userDuo.getName());
         }
         if (userDuo.getPassword() != null) {
-            user.setPassword(userDuo.getPassword());
+            user.setPassword(passwordEncoder.encode(userDuo.getPassword()));
         }
         if (userDuo.getEmail() != null) {
             user.setEmail(userDuo.getEmail());
