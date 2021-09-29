@@ -33,7 +33,7 @@ public class ApiLoggerAspect {
     public void executePointcut() {
     }
 
-    @Around("executePointcut()")
+    @Around("executePointcut() && @annotation(org.springframework.web.bind.annotation.ResponseStatus)")
     public Object logApi(final ProceedingJoinPoint joinPoint) throws Throwable {
         ApiLogDto apiLogDto = null;
         try {
