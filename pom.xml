@@ -162,7 +162,7 @@
                 <configuration>
                     <fork>true</fork>
                     <addResources>true</addResources>
-                    <jvmArguments>-Dfile.encoding=UTF8</jvmArguments>
+                    <jvmArguments>-Dfile.encoding=UTF8 -Dspring.profiles.active=dev</jvmArguments>
                 </configuration>
             </plugin>
             <!--QueryDSL-->
