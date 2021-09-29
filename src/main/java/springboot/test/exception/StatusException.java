@@ -1,6 +1,7 @@
 package springboot.test.exception;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,6 +16,7 @@ public class StatusException extends Exception {
         super(message);
         this.message = message;
         this.code = httpStatus;
+        this.jsonNode = new ObjectMapper().createObjectNode().put("message", message);
     }
 
     public StatusException(int httpStatus, JsonNode jsonNode) {

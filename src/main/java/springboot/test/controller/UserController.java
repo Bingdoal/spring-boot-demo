@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @PostMapping("")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public JsonNode createUser(@RequestBody @Valid UserDco userDco) {
         User user = userDaoService.create(userDco);
         return objectMapper.createObjectNode().put("id", user.getId());

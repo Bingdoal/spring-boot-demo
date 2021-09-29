@@ -24,12 +24,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(StatusException.class)
     public ResponseEntity<?> handleStatusException(StatusException ex) {
         log.error("{}: {}", ex.getCode(), ex.getMessage(), ex);
-        JsonNode jsonNode;
-        if (ex.getJsonNode() != null) {
-            jsonNode = ex.getJsonNode();
-        } else {
-            jsonNode = objectMapper.createObjectNode().put("message", ex.getMessage());
-        }
+        JsonNode jsonNode = ex.getJsonNode();
         return ResponseEntity.status(ex.getCode()).body(jsonNode);
     }
 
