@@ -23,7 +23,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // 自訂 Exception 錯誤處理
     @ExceptionHandler(StatusException.class)
     public ResponseEntity<?> handleStatusException(StatusException ex) {
-        log.error("StatusException: {}", ex.getMessage(), ex);
+        log.error("{}: {}", ex.getCode(), ex.getMessage(), ex);
         JsonNode jsonNode;
         if (ex.getJsonNode() != null) {
             jsonNode = ex.getJsonNode();
@@ -36,7 +36,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(PSQLException.class)
     public ResponseEntity<?> handleSQLException(PSQLException ex) {
         log.error("PSQLException: {}", ex.getMessage(), ex);
-        JsonNode jsonNode = objectMapper.createObjectNode().put("message", ex.getServerErrorMessage().getDetail());
+        JsonNode jsonNode;
+        if (ex.getServerErrorMessage() != null) {
+            jsonNode = objectMapper.createObjectNode().put("message", ex.getServerErrorMessage().getDetail());
+        } else {
+            jsonNode = objectMapper.createObjectNode().put("message", ex.getLocalizedMessage());
+        }
         return ResponseEntity.status(400).body(jsonNode);
     }
 
