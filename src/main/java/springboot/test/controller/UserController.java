@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.types.Predicate;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
@@ -19,6 +20,7 @@ import springboot.test.model.entity.User;
 import springboot.test.service.UserDaoService;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Slf4j
 @RestController()
@@ -37,6 +39,18 @@ public class UserController {
     public PageResultDto<UserDro> getAllUser(@QuerydslPredicate(root = User.class) Predicate predicate,
                                              final Pageable pageable) throws StatusException {
         return new PageResultDto<>(userDao.findAll(predicate, pageable), UserDro.class);
+    }
+
+    @GetMapping("/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDro getOneUser(@PathVariable("userId") Long userId) throws StatusException {
+        Optional<User> userOption = userDao.findById(userId);
+        if (userOption.isEmpty()) {
+            throw new StatusException(400, "UseID " + userId + " do not exist.");
+        }
+        UserDro userDro = new UserDro();
+        BeanUtils.copyProperties(userOption.get(), userDro);
+        return userDro;
     }
 
     @PostMapping("")
