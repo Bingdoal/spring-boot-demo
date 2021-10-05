@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
@@ -46,7 +49,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         if (ex instanceof MethodArgumentNotValidException) {
             return handleArgumentInvalid((MethodArgumentNotValidException) ex);
         }
+        if (ex instanceof MethodArgumentTypeMismatchException) {
+            return handleTypeMismatch((MethodArgumentTypeMismatchException) ex);
+        }
         log.error("Error: ", ex);
+        if (ex instanceof HttpMessageNotReadableException
+                || ex instanceof MissingServletRequestParameterException) {
+            return ResponseEntity.status(status).body(objectMapper.createObjectNode().put("message",
+                    "所輸入的參數資料型別不正確或是某些參數遺漏了。"));
+        }
         JsonNode jsonNode = objectMapper.createObjectNode().put("message", ex.getLocalizedMessage());
         return ResponseEntity.status(status).body(jsonNode);
     }
@@ -61,6 +72,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 + "\n 錯誤訊息：" + ex.getLocalizedMessage());
 
         JsonNode jsonNode = objectMapper.createObjectNode().put("message", defaultMessage);
+        return ResponseEntity.status(400).body(jsonNode);
+    }
+
+    private ResponseEntity<Object> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        log.error("\t[Exception] 輸入參數的資料型別不正確。"
+                + "\n 調用方法：" + ex.getParameter().getDeclaringClass() + "." + ex.getParameter().getMethod().getName()
+                + "\n 輸入参数名稱：" + ex.getName()
+                + "\n 錯誤的参数值：" + ex.getValue()
+                + "\n 錯誤訊息：" + ex.getLocalizedMessage());
+
+        JsonNode jsonNode = objectMapper.createObjectNode().put("message", ex.getLocalizedMessage());
         return ResponseEntity.status(400).body(jsonNode);
     }
 }
