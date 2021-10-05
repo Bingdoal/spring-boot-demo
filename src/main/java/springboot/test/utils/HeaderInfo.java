@@ -1,18 +1,19 @@
 package springboot.test.utils;
 
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Objects;
 
-@Component
 public class HeaderInfo {
-    public String getUsername() {
+    public static String getUsername() {
         return Objects.toString(getTokenPayload("username"), "");
     }
 
-    private Object getTokenPayload(String key) {
+    private static Object getTokenPayload(String key) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof Map) {
             Map<String, Object> map = (Map<String, Object>) principal;
@@ -20,5 +21,10 @@ public class HeaderInfo {
         } else {
             return null;
         }
+    }
+
+    private static String getHeader(String key){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        return request.getHeader(key);
     }
 }
