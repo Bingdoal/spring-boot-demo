@@ -27,7 +27,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 import springboot.test.filter.JwtAuthorizationFilter;
-import springboot.test.filter.RequestFilter;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
@@ -39,10 +38,6 @@ import java.time.format.DateTimeFormatter;
 
 @Configuration
 public class AppConfig {
-    @Bean
-    RequestFilter requestFilter() {
-        return new RequestFilter();
-    }
 
     @Bean
     JwtAuthorizationFilter jwtAuthorizationFilter() {

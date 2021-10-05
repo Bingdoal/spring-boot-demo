@@ -8,12 +8,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 import springboot.test.service.JwtTokenService;
+import springboot.test.utils.SecurityInfo;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @Slf4j
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
@@ -22,25 +24,27 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     JwtTokenService jwtTokenService;
 
     private final String headerString = "Authorization";
-    private final String tokenPrefix = "Bearer";
 
     @Override
     protected void doFilterInternal(HttpServletRequest req,
                                     HttpServletResponse res,
                                     FilterChain chain) throws ServletException, IOException {
+        final String queryString = (req.getQueryString() == null) ? "" : "?" + req.getQueryString();
+        log.info("\t[Request] {} {} {}", req.getMethod(), req.getRequestURI(), queryString);
+
         String header = req.getHeader(headerString);
 
-        if (header == null || !header.startsWith(tokenPrefix)) {
+        if (header == null || !header.startsWith(SecurityInfo.TOKEN_PREFIX)) {
             chain.doFilter(req, res);
             return;
         }
         String token = req.getHeader(headerString);
         if (token != null) {
             try {
-                String username = jwtTokenService.validateToken(token.replace(tokenPrefix, ""));
+                Map<String, Object> payload = jwtTokenService.validateToken(token.replace(SecurityInfo.TOKEN_PREFIX, ""));
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                            new UsernamePasswordAuthenticationToken(username, null, null);
+                            new UsernamePasswordAuthenticationToken(payload, null, null);
                     usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }

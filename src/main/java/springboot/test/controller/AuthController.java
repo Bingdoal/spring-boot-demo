@@ -30,6 +30,8 @@ public class AuthController {
     @PostMapping("/refresh")
     @ResponseStatus(HttpStatus.OK)
     public TokenDto refresh() {
+        log.info("Refresh: {}", headerInfo.getUsername());
         return jwtTokenService.generateToken(new JwtPayloadDto(headerInfo.getUsername()));
     }
+
 }
