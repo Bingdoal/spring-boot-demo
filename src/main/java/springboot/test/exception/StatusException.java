@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import springboot.test.dto.I18nDto;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -15,6 +16,12 @@ public class StatusException extends Exception {
         super(message);
         this.code = httpStatus;
         this.jsonNode = new ObjectMapper().createObjectNode().put("message", message);
+    }
+
+    public StatusException(int httpStatus, I18nDto i18nDto) {
+        super(i18nDto.toString());
+        this.code = httpStatus;
+        this.jsonNode = new ObjectMapper().createObjectNode().put("message", i18nDto.toString());
     }
 
     public StatusException(int httpStatus, JsonNode jsonNode) {

@@ -4,7 +4,7 @@ import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
 import springboot.test.dto.JwtPayloadDto;
 import springboot.test.dto.auth.TokenDto;
-import springboot.test.utils.SecurityInfo;
+import springboot.test.utils.SecurityUtil;
 
 import javax.security.auth.message.AuthException;
 import java.io.Serializable;
@@ -20,19 +20,19 @@ public class JwtTokenService implements Serializable {
         Map<String, Object> claims = new HashMap<>() {{
             put("username", payload.getUsername());
         }};
-        long expirationTime = Instant.now().toEpochMilli() + SecurityInfo.EXPIRATION;
+        long expirationTime = Instant.now().toEpochMilli() + SecurityUtil.EXPIRATION;
         String token = Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(new Date(expirationTime))
-                .signWith(SignatureAlgorithm.HS512, SecurityInfo.SECRET)
+                .signWith(SignatureAlgorithm.HS512, SecurityUtil.SECRET)
                 .compact();
         return new TokenDto(token, expirationTime);
     }
 
-    public Map<String,Object> validateToken(String token) throws AuthException, SignatureException, ExpiredJwtException, IllegalArgumentException {
+    public Map<String, Object> validateToken(String token) throws AuthException, SignatureException, ExpiredJwtException, IllegalArgumentException {
         try {
             Jws<Claims> claimsJws = Jwts.parser()
-                    .setSigningKey(SecurityInfo.SECRET)
+                    .setSigningKey(SecurityUtil.SECRET)
                     .parseClaimsJws(token);
             return claimsJws.getBody();
         } catch (SignatureException | ExpiredJwtException | IllegalArgumentException e) {

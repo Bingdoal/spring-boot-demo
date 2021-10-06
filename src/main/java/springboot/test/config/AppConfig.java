@@ -26,6 +26,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.LocaleResolver;
 import springboot.test.filter.JwtAuthorizationFilter;
 
 import javax.persistence.EntityManager;
@@ -38,6 +39,11 @@ import java.time.format.DateTimeFormatter;
 
 @Configuration
 public class AppConfig {
+
+    @Bean
+    LocaleResolver localeResolver() {
+        return new HeaderLocaleResolver();
+    }
 
     @Bean
     JwtAuthorizationFilter jwtAuthorizationFilter() {

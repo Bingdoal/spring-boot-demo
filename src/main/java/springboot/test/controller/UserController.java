@@ -17,6 +17,7 @@ import springboot.test.dto.user.UserDuo;
 import springboot.test.exception.StatusException;
 import springboot.test.model.dao.UserDao;
 import springboot.test.model.entity.User;
+import springboot.test.service.I18nService;
 import springboot.test.service.UserDaoService;
 
 import javax.validation.Valid;
@@ -33,6 +34,8 @@ public class UserController {
     private UserDaoService userDaoService;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private I18nService i18nService;
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
@@ -46,7 +49,7 @@ public class UserController {
     public UserDro getOneUser(@PathVariable("userId") Long userId) throws StatusException {
         Optional<User> userOption = userDao.findById(userId);
         if (userOption.isEmpty()) {
-            throw new StatusException(400, "UseID " + userId + " do not exist.");
+            throw new StatusException(400, i18nService.getMsg("user.controller.not.found.by.id").args(userId));
         }
         UserDro userDro = new UserDro();
         BeanUtils.copyProperties(userOption.get(), userDro);
@@ -69,7 +72,7 @@ public class UserController {
 
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeUser(@PathVariable("userId") Long userId) throws StatusException {
+    public void removeUser(@PathVariable("userId") Long userId) {
         userDao.deleteById(userId);
     }
 }

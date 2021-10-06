@@ -1,5 +1,6 @@
 package springboot.test.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -8,7 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Objects;
 
-public class HeaderInfo {
+@Slf4j
+public class HeaderUtil {
     public static String getUsername() {
         return Objects.toString(getTokenPayload("username"), "");
     }
@@ -23,7 +25,7 @@ public class HeaderInfo {
         }
     }
 
-    private static String getHeader(String key){
+    private static String getHeader(String key) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         return request.getHeader(key);
     }

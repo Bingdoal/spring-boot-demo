@@ -8,7 +8,7 @@ import springboot.test.dto.JwtPayloadDto;
 import springboot.test.dto.auth.LoginDto;
 import springboot.test.dto.auth.TokenDto;
 import springboot.test.service.JwtTokenService;
-import springboot.test.utils.HeaderInfo;
+import springboot.test.utils.HeaderUtil;
 
 import javax.validation.Valid;
 
@@ -18,8 +18,6 @@ import javax.validation.Valid;
 public class AuthController {
     @Autowired
     JwtTokenService jwtTokenService;
-    @Autowired
-    HeaderInfo headerInfo;
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
@@ -30,8 +28,8 @@ public class AuthController {
     @PostMapping("/refresh")
     @ResponseStatus(HttpStatus.OK)
     public TokenDto refresh() {
-        log.info("Refresh: {}", headerInfo.getUsername());
-        return jwtTokenService.generateToken(new JwtPayloadDto(headerInfo.getUsername()));
+        log.info("Refresh: {}", HeaderUtil.getUsername());
+        return jwtTokenService.generateToken(new JwtPayloadDto(HeaderUtil.getUsername()));
     }
 
 }

@@ -9,7 +9,7 @@ logging:
     org.flywaydb.core: WARN
     org.apache.catalina: WARN
   pattern:
-    console: "%clr(%d{dd HH:mm:ss.SSS}){cyan} %clr(%-5level) %clr([%8.15thread]){cyan} %clr(%-120.120(%logger{100}.%method %line)){yellow} %n%clr(%m){faint}%n"
+    console: "%d{dd HH:mm:ss.SSS} %-5level [%8.15thread] %-120.120(%logger{100}.%method %line) %n%m%n"
 
 server:
   port: 8080
@@ -18,6 +18,10 @@ server:
 spring:
   main:
     web-application-type: servlet
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    cache-duration: 3600
   # ========================
   #  Query Pageable
   # =======================

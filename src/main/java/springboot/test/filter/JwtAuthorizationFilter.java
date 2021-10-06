@@ -2,13 +2,15 @@ package springboot.test.filter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 import springboot.test.service.JwtTokenService;
-import springboot.test.utils.SecurityInfo;
+import springboot.test.utils.HeaderUtil;
+import springboot.test.utils.SecurityUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -34,14 +36,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String header = req.getHeader(headerString);
 
-        if (header == null || !header.startsWith(SecurityInfo.TOKEN_PREFIX)) {
+        if (header == null || !header.startsWith(SecurityUtil.TOKEN_PREFIX)) {
             chain.doFilter(req, res);
             return;
         }
         String token = req.getHeader(headerString);
         if (token != null) {
             try {
-                Map<String, Object> payload = jwtTokenService.validateToken(token.replace(SecurityInfo.TOKEN_PREFIX, ""));
+                Map<String, Object> payload = jwtTokenService.validateToken(token.replace(SecurityUtil.TOKEN_PREFIX, ""));
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                             new UsernamePasswordAuthenticationToken(payload, null, null);
