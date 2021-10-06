@@ -8,6 +8,7 @@ import springboot.test.dto.user.UserDuo;
 import springboot.test.exception.StatusException;
 import springboot.test.model.dao.UserDao;
 import springboot.test.model.entity.User;
+import springboot.test.utils.MyBeanUtils;
 
 import java.util.Optional;
 
@@ -34,15 +35,7 @@ public class UserDaoService {
         } else {
             throw new StatusException(400, "UserId " + userId + " do not exist.");
         }
-        if (userDuo.getName() != null) {
-            user.setName(userDuo.getName());
-        }
-        if (userDuo.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(userDuo.getPassword()));
-        }
-        if (userDuo.getEmail() != null) {
-            user.setEmail(userDuo.getEmail());
-        }
+        MyBeanUtils.copyProperties(userDuo, user, false);
         return userDao.save(user);
     }
 }

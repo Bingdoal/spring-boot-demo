@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.types.Predicate;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
@@ -19,6 +18,7 @@ import springboot.test.model.dao.UserDao;
 import springboot.test.model.entity.User;
 import springboot.test.service.I18nService;
 import springboot.test.service.UserDaoService;
+import springboot.test.utils.MyBeanUtils;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -52,7 +52,7 @@ public class UserController {
             throw new StatusException(400, i18nService.getMsg("user.controller.not.found.by.id").args(userId));
         }
         UserDro userDro = new UserDro();
-        BeanUtils.copyProperties(userOption.get(), userDro);
+        MyBeanUtils.copyProperties(userOption.get(), userDro);
         return userDro;
     }
 
