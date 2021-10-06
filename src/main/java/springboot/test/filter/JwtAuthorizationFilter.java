@@ -1,15 +1,16 @@
 package springboot.test.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 import springboot.test.service.JwtTokenService;
-import springboot.test.utils.HeaderUtil;
 import springboot.test.utils.SecurityUtil;
 
 import javax.servlet.FilterChain;
@@ -23,7 +24,9 @@ import java.util.Map;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Autowired
-    JwtTokenService jwtTokenService;
+    private JwtTokenService jwtTokenService;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private final String headerString = "Authorization";
 
@@ -32,7 +35,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                                     HttpServletResponse res,
                                     FilterChain chain) throws ServletException, IOException {
         final String queryString = (req.getQueryString() == null) ? "" : "?" + req.getQueryString();
-        log.info("\t[Request] {} {} {}", req.getMethod(), req.getRequestURI(), queryString);
+        log.info("\t[Request] {} {}{}", req.getMethod(), req.getRequestURI(), queryString);
 
         String header = req.getHeader(headerString);
 
@@ -44,6 +47,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         if (token != null) {
             try {
                 Map<String, Object> payload = jwtTokenService.validateToken(token.replace(SecurityUtil.TOKEN_PREFIX, ""));
+                log.info("[Token] payload: {}", objectMapper.valueToTree(payload).toString());
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                             new UsernamePasswordAuthenticationToken(payload, null, null);
@@ -51,13 +55,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
             } catch (Exception e) {
-                log.error("validateToken: {}", e.getMessage());
+                throw new BadCredentialsException(e.getMessage());
             }
         }
         try {
             chain.doFilter(req, res);
         } catch (final AccessDeniedException e) {
-            log.error("AccessDeniedException: {}", e.getMessage());
+            throw e;
         }
     }
 }

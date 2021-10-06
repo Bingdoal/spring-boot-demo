@@ -4,6 +4,7 @@
 logging:
   level:
     root: INFO
+    springboot.test: DEBUG
     com.zaxxer.hikari: WARN
     org.hibernate: WARN
     org.flywaydb.core: WARN
@@ -44,7 +45,6 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/mydb?useUnicode=true&characterEncoding=utf-8
     username: postgres
-    password: 123456
   jpa:
     database: POSTGRESQL
     show-sql: false
