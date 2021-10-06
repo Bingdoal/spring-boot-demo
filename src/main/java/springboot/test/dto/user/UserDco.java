@@ -10,13 +10,13 @@ import javax.validation.constraints.Size;
 public class UserDco {
     @NotNull
     @NotBlank
-    @Size(max = 255, message = "The length of field(name) must less then 255")
+    @Size(max = 255, message = "{validation.user.name.length.max}")
     private String name;
     @NotNull
     @NotBlank
     private String password;
     @NotNull
     @NotBlank
-    @Size(max = 255, message = "The length of field(email) must less then 255")
+    @Size(max = 255, message = "{validation.user.email.length.max}")
     private String email;
 }
