@@ -1,6 +1,6 @@
 package springboot.test.config;
 
-import io.micrometer.core.instrument.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 import javax.servlet.http.HttpServletRequest;

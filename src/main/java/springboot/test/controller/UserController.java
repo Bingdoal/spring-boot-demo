@@ -10,9 +10,10 @@ import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springboot.test.annotation.ApiPageable;
+import springboot.test.dto.UserDto;
 import springboot.test.dto.bean.I18nBean;
 import springboot.test.dto.bean.PageResultBean;
-import springboot.test.dto.UserDto;
 import springboot.test.exception.StatusException;
 import springboot.test.model.dao.UserDao;
 import springboot.test.model.entity.User;
@@ -32,6 +33,7 @@ public class UserController {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @ApiPageable
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     public PageResultBean<User> getAllUser(@QuerydslPredicate(root = User.class) Predicate predicate,

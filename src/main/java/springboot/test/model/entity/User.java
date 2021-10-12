@@ -1,20 +1,13 @@
 package springboot.test.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Entity;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Data
 @JsonIgnoreProperties("password")
 public class User extends EntityBase {
     private String name;

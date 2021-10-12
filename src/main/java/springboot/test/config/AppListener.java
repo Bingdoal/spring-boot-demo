@@ -28,7 +28,7 @@ public class AppListener implements ApplicationListener<ContextRefreshedEvent> {
     private void flywayMigrate() {
         final Flyway flyway = Flyway.configure()
                 .baselineOnMigrate(true)
-                .target(MigrationVersion.fromVersion(datasourceInfo.getMigrationVersion()))
+                .target(MigrationVersion.LATEST)
                 .dataSource(datasourceInfo.getUrl(), datasourceInfo.getUsername(), datasourceInfo.getPassword())
                 .schemas(datasourceInfo.getSchema()).load();
         final MigrateResult migrateResult = flyway.migrate();

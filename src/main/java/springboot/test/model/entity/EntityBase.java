@@ -1,10 +1,7 @@
 package springboot.test.model.entity;
 
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,10 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Data
 public class EntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
