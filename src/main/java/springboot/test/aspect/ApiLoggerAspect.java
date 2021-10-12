@@ -29,7 +29,9 @@ public class ApiLoggerAspect {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Pointcut("@annotation(org.springframework.web.bind.annotation.PostMapping)")
+    @Pointcut("@annotation(org.springframework.web.bind.annotation.PostMapping)" +
+            "&& @annotation(org.springframework.web.bind.annotation.PutMapping)" +
+            "&& @annotation(org.springframework.web.bind.annotation.DeleteMapping)")
     public void executePointcut() {
     }
 

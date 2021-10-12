@@ -3,7 +3,7 @@ package springboot.test.service;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
 import springboot.test.dto.JwtPayloadDto;
-import springboot.test.dto.auth.TokenDto;
+import springboot.test.dto.TokenDto;
 import springboot.test.utils.SecurityUtil;
 
 import javax.security.auth.message.AuthException;

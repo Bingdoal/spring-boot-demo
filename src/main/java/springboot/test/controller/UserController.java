@@ -8,19 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import springboot.test.dto.PageResultDto;
-import springboot.test.dto.user.UserDco;
-import springboot.test.dto.user.UserDro;
-import springboot.test.dto.user.UserDuo;
+import springboot.test.dto.bean.I18nBean;
+import springboot.test.dto.bean.PageResultBean;
+import springboot.test.dto.UserDto;
 import springboot.test.exception.StatusException;
 import springboot.test.model.dao.UserDao;
 import springboot.test.model.entity.User;
-import springboot.test.service.I18nService;
 import springboot.test.service.UserDaoService;
-import springboot.test.utils.MyBeanUtils;
 
-import javax.validation.Valid;
 import java.util.Optional;
 
 @Slf4j
@@ -34,31 +31,27 @@ public class UserController {
     private UserDaoService userDaoService;
     @Autowired
     private ObjectMapper objectMapper;
-    @Autowired
-    private I18nService i18nService;
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public PageResultDto<UserDro> getAllUser(@QuerydslPredicate(root = User.class) Predicate predicate,
-                                             final Pageable pageable) throws StatusException {
-        return new PageResultDto<>(userDao.findAll(predicate, pageable), UserDro.class);
+    public PageResultBean<User> getAllUser(@QuerydslPredicate(root = User.class) Predicate predicate,
+                                           final Pageable pageable) {
+        return new PageResultBean<>(userDao.findAll(predicate, pageable));
     }
 
     @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDro getOneUser(@PathVariable("userId") Long userId) throws StatusException {
+    public User getOneUser(@PathVariable("userId") Long userId) throws StatusException {
         Optional<User> userOption = userDao.findById(userId);
         if (userOption.isEmpty()) {
-            throw new StatusException(400, i18nService.getMsg("user.controller.not.found.by.id").args(userId));
+            throw new StatusException(400, new I18nBean("user.controller.not.found.by.id").args(userId));
         }
-        UserDro userDro = new UserDro();
-        MyBeanUtils.copyProperties(userOption.get(), userDro);
-        return userDro;
+        return userOption.get();
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public JsonNode createUser(@RequestBody @Valid UserDco userDco) {
+    public JsonNode createUser(@RequestBody @Validated(UserDto.Create.class) UserDto userDco) {
         User user = userDaoService.create(userDco);
         return objectMapper.createObjectNode().put("id", user.getId());
     }
@@ -66,7 +59,7 @@ public class UserController {
     @PutMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void modifyUser(@PathVariable("userId") Long userId,
-                           @RequestBody @Valid UserDuo userDuo) throws StatusException {
+                           @RequestBody @Validated(UserDto.Update.class) UserDto userDuo) throws StatusException {
         userDaoService.modify(userId, userDuo);
     }
 

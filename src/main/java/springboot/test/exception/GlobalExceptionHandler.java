@@ -23,7 +23,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Autowired
     private ObjectMapper objectMapper;
 
-    // 自訂 Exception 錯誤處理
     @ExceptionHandler(StatusException.class)
     public ResponseEntity<?> handleStatusException(StatusException ex) {
         log.error("{}: {}", ex.getCode(), ex.getMessage(), ex);

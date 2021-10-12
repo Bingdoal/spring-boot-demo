@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import springboot.test.dto.JwtPayloadDto;
-import springboot.test.dto.auth.LoginDto;
-import springboot.test.dto.auth.TokenDto;
+import springboot.test.dto.LoginDto;
+import springboot.test.dto.TokenDto;
 import springboot.test.service.JwtTokenService;
 import springboot.test.utils.HeaderUtil;
 
@@ -32,4 +32,9 @@ public class AuthController {
         return jwtTokenService.generateToken(new JwtPayloadDto(HeaderUtil.getUsername()));
     }
 
+    @PostMapping("/logout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void logout() {
+
+    }
 }
