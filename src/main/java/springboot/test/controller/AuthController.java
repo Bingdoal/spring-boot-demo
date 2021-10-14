@@ -1,5 +1,6 @@
 package springboot.test.controller;
 
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import springboot.test.utils.HeaderUtil;
 
 import javax.validation.Valid;
 
+@Api(tags = "Authentication")
 @Slf4j
 @RestController()
 @RequestMapping("/v1/auth")

@@ -3,6 +3,7 @@ package springboot.test.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.types.Predicate;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ import springboot.test.service.UserDaoService;
 
 import java.util.Optional;
 
+@Api(tags = "User")
 @Slf4j
 @RestController()
 @RequestMapping("/v1/user")

@@ -9,6 +9,7 @@ logging:
     org.hibernate: WARN
     org.flywaydb.core: WARN
     org.apache.catalina: WARN
+    org.springframework.boot.devtools: WARN
   pattern:
     console: "%d{dd HH:mm:ss.SSS} %-5level [%8.15thread] %-120.120(%logger{100}.%method %line) %n%m%n"
 

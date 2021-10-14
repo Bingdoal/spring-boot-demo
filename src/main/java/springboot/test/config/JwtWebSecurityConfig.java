@@ -15,7 +15,7 @@ import springboot.test.filter.JwtAuthorizationFilter;
 @EnableWebSecurity
 public class JwtWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    JwtAuthorizationFilter jwtAuthorizationFilter;
+    private JwtAuthorizationFilter jwtAuthorizationFilter;
 
     private final String allowLocalAccess = "hasIpAddress('127.0.0.1') or hasIpAddress('::1')";
 
