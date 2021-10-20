@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springboot.test.annotation.ApiPageable;
+import springboot.test.dto.Create;
+import springboot.test.dto.Update;
 import springboot.test.dto.UserDto;
 import springboot.test.dto.bean.I18nBean;
 import springboot.test.dto.bean.PageResultBean;
@@ -55,7 +57,7 @@ public class UserController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public JsonNode createUser(@RequestBody @Validated(UserDto.Create.class) UserDto userDco) {
+    public JsonNode createUser(@RequestBody @Validated(Create.class) UserDto userDco) {
         User user = userDaoService.create(userDco);
         return objectMapper.createObjectNode().put("id", user.getId());
     }
@@ -63,7 +65,7 @@ public class UserController {
     @PutMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void modifyUser(@PathVariable("userId") Long userId,
-                           @RequestBody @Validated(UserDto.Update.class) UserDto userDuo) throws StatusException {
+                           @RequestBody @Validated(Update.class) UserDto userDuo) throws StatusException {
         userDaoService.modify(userId, userDuo);
     }
 

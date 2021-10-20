@@ -17,6 +17,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -39,6 +42,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         } else {
             jsonNode = objectMapper.createObjectNode().put("message", ex.getLocalizedMessage());
         }
+        return ResponseEntity.status(400).body(jsonNode);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException ex) {
+        ConstraintViolation<?> constraintViolation = ex.getConstraintViolations().iterator().next();
+        String defaultMessage = constraintViolation.getMessage();
+        log.error("\t[Exception] 輸入的參數資料驗證失敗。"
+                + "\t\n 調用類別：" + constraintViolation.getRootBeanClass().getName()
+                + "\t\n 参数名稱：" + constraintViolation.getPropertyPath()
+                + "\t\n 錯誤訊息：" + ex.getLocalizedMessage());
+
+        JsonNode jsonNode = objectMapper.createObjectNode().put("message", defaultMessage);
         return ResponseEntity.status(400).body(jsonNode);
     }
 
@@ -65,10 +81,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<Object> handleArgumentInvalid(MethodArgumentNotValidException ex) {
         String defaultMessage = ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();
         log.error("\t[Exception] 輸入參數的資料型別不正確。"
-                + "\n 調用方法：" + ex.getParameter().getDeclaringClass() + "." + ex.getParameter().getMethod().getName()
-                + "\n 輸入参数名稱：" + ex.getBindingResult().getObjectName()
-                + "\n 錯誤的参数值：" + ex.getBindingResult().getTarget()
-                + "\n 錯誤訊息：" + ex.getLocalizedMessage());
+                + "\t\n 調用方法：" + ex.getParameter().getDeclaringClass() + "." + ex.getParameter().getMethod().getName()
+                + "\t\n 輸入参数名稱：" + ex.getBindingResult().getObjectName()
+                + "\t\n 錯誤的参数值：" + ex.getBindingResult().getTarget()
+                + "\t\n 錯誤訊息：" + ex.getLocalizedMessage());
 
         JsonNode jsonNode = objectMapper.createObjectNode().put("message", defaultMessage);
         return ResponseEntity.status(400).body(jsonNode);
@@ -76,10 +92,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
         log.error("\t[Exception] 輸入參數的資料型別不正確。"
-                + "\n 調用方法：" + ex.getParameter().getDeclaringClass() + "." + ex.getParameter().getMethod().getName()
-                + "\n 輸入参数名稱：" + ex.getName()
-                + "\n 錯誤的参数值：" + ex.getValue()
-                + "\n 錯誤訊息：" + ex.getLocalizedMessage());
+                + "\t\n 調用方法：" + ex.getParameter().getDeclaringClass() + "." + ex.getParameter().getMethod().getName()
+                + "\t\n 輸入参数名稱：" + ex.getName()
+                + "\t\n 錯誤的参数值：" + ex.getValue()
+                + "\t\n 錯誤訊息：" + ex.getLocalizedMessage());
 
         JsonNode jsonNode = objectMapper.createObjectNode().put("message", ex.getLocalizedMessage());
         return ResponseEntity.status(400).body(jsonNode);
