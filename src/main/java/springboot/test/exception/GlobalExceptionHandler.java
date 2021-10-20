@@ -51,7 +51,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String defaultMessage = constraintViolation.getMessage();
         log.error("\t[Exception] 輸入的參數資料驗證失敗。"
                 + "\t\n 調用類別：" + constraintViolation.getRootBeanClass().getName()
-                + "\t\n 参数名稱：" + constraintViolation.getPropertyPath()
+                + "\t\n 参數名稱：" + constraintViolation.getPropertyPath()
                 + "\t\n 錯誤訊息：" + ex.getLocalizedMessage());
 
         JsonNode jsonNode = objectMapper.createObjectNode().put("message", defaultMessage);
@@ -73,6 +73,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             return ResponseEntity.status(status).body(objectMapper.createObjectNode().put("message",
                     "所輸入的參數資料型別不正確或是某些參數遺漏了。"));
         }
+
         JsonNode jsonNode = objectMapper.createObjectNode().put("message", ex.getLocalizedMessage());
         return ResponseEntity.status(status).body(jsonNode);
     }
@@ -80,10 +81,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     // 資料驗證錯誤處理
     private ResponseEntity<Object> handleArgumentInvalid(MethodArgumentNotValidException ex) {
         String defaultMessage = ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();
-        log.error("\t[Exception] 輸入參數的資料型別不正確。"
+        log.error("\t[Exception] 輸入的參數資料驗證失敗。"
                 + "\t\n 調用方法：" + ex.getParameter().getDeclaringClass() + "." + ex.getParameter().getMethod().getName()
-                + "\t\n 輸入参数名稱：" + ex.getBindingResult().getObjectName()
-                + "\t\n 錯誤的参数值：" + ex.getBindingResult().getTarget()
+                + "\t\n 輸入参數名稱：" + ex.getBindingResult().getObjectName()
+                + "\t\n 錯誤的参數值：" + ex.getBindingResult().getTarget()
                 + "\t\n 錯誤訊息：" + ex.getLocalizedMessage());
 
         JsonNode jsonNode = objectMapper.createObjectNode().put("message", defaultMessage);
@@ -93,8 +94,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<Object> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
         log.error("\t[Exception] 輸入參數的資料型別不正確。"
                 + "\t\n 調用方法：" + ex.getParameter().getDeclaringClass() + "." + ex.getParameter().getMethod().getName()
-                + "\t\n 輸入参数名稱：" + ex.getName()
-                + "\t\n 錯誤的参数值：" + ex.getValue()
+                + "\t\n 輸入参數名稱：" + ex.getName()
+                + "\t\n 錯誤的参數值：" + ex.getValue()
                 + "\t\n 錯誤訊息：" + ex.getLocalizedMessage());
 
         JsonNode jsonNode = objectMapper.createObjectNode().put("message", ex.getLocalizedMessage());
