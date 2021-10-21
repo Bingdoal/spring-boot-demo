@@ -18,10 +18,13 @@ public class UserDto {
     private String password;
 
     @NotBlank(groups = Create.class)
-    @Size(max = 255, message = "{validation.user.email.length.max}")
+    @Size(max = 255, message = "{validation.user.email.length.max}", groups = {Update.class, Create.class})
     @Email()
     private String email;
 
-    public interface Create{}
-    public interface Update{}
+    public interface Create {
+    }
+
+    public interface Update {
+    }
 }

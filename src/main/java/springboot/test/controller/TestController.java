@@ -8,15 +8,26 @@ import org.springframework.web.bind.annotation.*;
 import springboot.test.dto.UserDto;
 import springboot.test.dto.ValidList;
 
+import javax.validation.Valid;
+import java.util.List;
+
 @Api(tags = "Test")
 @Slf4j
 @RestController()
 @RequestMapping("/v1/test")
+@Validated
 public class TestController {
 
     @PostMapping("/listValidation")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void testListValidation(@RequestBody @Validated(UserDto.Create.class) ValidList<UserDto> userDtoList) {
+    @Validated(UserDto.Create.class)
+    public void testListValidation(@RequestBody @Valid List<UserDto> userDtoList) {
+
+    }
+
+    @PostMapping("/listValidation")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void testValidList(@RequestBody @Validated(UserDto.Create.class) ValidList<UserDto> userDtoList) {
 
     }
 }
