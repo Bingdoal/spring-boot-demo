@@ -16,7 +16,7 @@ import java.util.List;
 @RestController()
 @RequestMapping("/v1/test")
 @Validated
-public class TestController {
+public class DemoController {
 
     @PostMapping("/listValidation")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -25,7 +25,7 @@ public class TestController {
 
     }
 
-    @PostMapping("/listValidation")
+    @PostMapping("/testValidList")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void testValidList(@RequestBody @Validated(UserDto.Create.class) ValidList<UserDto> userDtoList) {
 
