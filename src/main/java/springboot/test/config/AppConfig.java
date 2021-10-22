@@ -29,7 +29,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.LocaleResolver;
-import springboot.test.filter.JwtAuthorizationFilter;
+import springboot.test.middleware.filter.JwtAuthorizationFilter;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;

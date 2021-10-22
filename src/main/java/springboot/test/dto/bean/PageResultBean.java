@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
-import springboot.test.exception.StatusException;
+import springboot.test.middleware.exception.StatusException;
 
 import java.util.ArrayList;
 import java.util.List;

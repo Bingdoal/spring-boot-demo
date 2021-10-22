@@ -1,4 +1,4 @@
-package springboot.test.exception;
+package springboot.test.middleware.exception;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,4 +1,4 @@
-package springboot.test.exception;
+package springboot.test.middleware.exception;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -68,12 +66,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             return handleTypeMismatch((MethodArgumentTypeMismatchException) ex);
         }
         log.error("Error: ", ex);
-        if (ex instanceof HttpMessageNotReadableException
-                || ex instanceof MissingServletRequestParameterException) {
-            return ResponseEntity.status(status).body(objectMapper.createObjectNode().put("message",
-                    "所輸入的參數資料型別不正確或是某些參數遺漏了。"));
-        }
-
         JsonNode jsonNode = objectMapper.createObjectNode().put("message", ex.getLocalizedMessage());
         return ResponseEntity.status(status).body(jsonNode);
     }

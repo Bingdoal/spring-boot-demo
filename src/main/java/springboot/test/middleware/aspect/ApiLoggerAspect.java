@@ -1,4 +1,4 @@
-package springboot.test.aspect;
+package springboot.test.middleware.aspect;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import springboot.test.dto.ApiLogDto;
-import springboot.test.exception.StatusException;
+import springboot.test.middleware.exception.StatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

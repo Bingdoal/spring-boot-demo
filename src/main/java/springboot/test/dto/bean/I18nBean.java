@@ -7,7 +7,7 @@ import springboot.test.utils.StaticApplicationContext;
 import java.util.*;
 
 public class I18nBean {
-    public I18nBean(String key) {
+    private I18nBean(String key) {
         this.key = key;
         this.locale = LocaleContextHolder.getLocale();
     }
@@ -15,6 +15,10 @@ public class I18nBean {
     private String key;
     private List<String> args = new ArrayList<>();
     private Locale locale;
+
+    public static I18nBean key(String key){
+        return new I18nBean(key);
+    }
 
     public I18nBean args(Object... objects) {
         for (Object object : objects) {

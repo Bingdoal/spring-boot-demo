@@ -15,7 +15,7 @@ import springboot.test.annotation.ApiPageable;
 import springboot.test.dto.UserDto;
 import springboot.test.dto.bean.I18nBean;
 import springboot.test.dto.bean.PageResultBean;
-import springboot.test.exception.StatusException;
+import springboot.test.middleware.exception.StatusException;
 import springboot.test.model.dao.UserDao;
 import springboot.test.model.entity.User;
 import springboot.test.service.UserDaoService;
@@ -48,7 +48,7 @@ public class UserController {
     public User getOneUser(@PathVariable("userId") Long userId) throws StatusException {
         Optional<User> userOption = userDao.findById(userId);
         if (userOption.isEmpty()) {
-            throw new StatusException(400, new I18nBean("user.controller.not.found.by.id").args(userId));
+            throw new StatusException(400, I18nBean.key("user.controller.not.found.by.id").args(userId));
         }
         return userOption.get();
     }

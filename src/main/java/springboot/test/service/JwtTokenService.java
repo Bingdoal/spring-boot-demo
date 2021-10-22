@@ -21,12 +21,13 @@ public class JwtTokenService implements Serializable {
             put("username", payload.getUsername());
         }};
         long expirationTime = Instant.now().toEpochMilli() + SecurityUtil.EXPIRATION;
+        Date expireDate = new Date(expirationTime);
         String token = Jwts.builder()
                 .setClaims(claims)
-                .setExpiration(new Date(expirationTime))
+                .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS512, SecurityUtil.SECRET)
                 .compact();
-        return new TokenDto(token, expirationTime);
+        return new TokenDto(token, expireDate.getTime());
     }
 
     public Map<String, Object> validateToken(String token) throws AuthException, SignatureException, ExpiredJwtException, IllegalArgumentException {
