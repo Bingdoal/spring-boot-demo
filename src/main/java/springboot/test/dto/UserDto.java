@@ -6,6 +6,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import javax.validation.groups.Default;
 
 @Data
 public class UserDto {
@@ -22,9 +23,9 @@ public class UserDto {
     @Email()
     private String email;
 
-    public interface Create {
+    public interface Create extends Default {
     }
 
-    public interface Update {
+    public interface Update extends Default {
     }
 }

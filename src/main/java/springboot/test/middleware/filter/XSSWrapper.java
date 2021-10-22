@@ -1,10 +1,9 @@
 package springboot.test.middleware.filter;
 
 import lombok.SneakyThrows;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
-import org.owasp.esapi.ESAPI;
+import org.jsoup.safety.Safelist;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
@@ -57,13 +56,12 @@ public class XSSWrapper extends HttpServletRequestWrapper {
     }
 
     public static String stripXSS(String value) {
-        if (value == null) {
-            return null;
+        if (value == null
+                || StringUtils.isEmpty(value)
+                || StringUtils.isBlank(value)) {
+            return value;
         }
-        value = ESAPI.encoder()
-                .canonicalize(value)
-                .replaceAll("\0", "");
-        return Jsoup.clean(value, Whitelist.none());
+        return Jsoup.clean(value, Safelist.relaxed());
     }
 
     public void resetInputStream(byte[] data) {
@@ -73,7 +71,7 @@ public class XSSWrapper extends HttpServletRequestWrapper {
     @Override
     public ServletInputStream getInputStream() throws IOException {
         if (rawData == null) {
-            rawData = IOUtils.toByteArray(this.request.getInputStream());
+            rawData = this.request.getInputStream().readAllBytes();
             servletStream.stream = new ByteArrayInputStream(rawData);
         }
         return servletStream;
@@ -82,7 +80,7 @@ public class XSSWrapper extends HttpServletRequestWrapper {
     @Override
     public BufferedReader getReader() throws IOException {
         if (rawData == null) {
-            rawData = IOUtils.toByteArray(this.request.getInputStream());
+            rawData = this.request.getInputStream().readAllBytes();
             servletStream.stream = new ByteArrayInputStream(rawData);
         }
         String encoding = getCharacterEncoding();

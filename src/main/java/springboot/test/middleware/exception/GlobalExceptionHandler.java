@@ -38,7 +38,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         if (ex.getServerErrorMessage() != null) {
             jsonNode = objectMapper.createObjectNode().put("message", ex.getServerErrorMessage().getDetail());
         } else {
-            jsonNode = objectMapper.createObjectNode().put("message", ex.getLocalizedMessage());
+            jsonNode = objectMapper.createObjectNode().put("message", ex.getMessage());
         }
         return ResponseEntity.status(400).body(jsonNode);
     }

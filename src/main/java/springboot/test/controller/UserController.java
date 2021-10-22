@@ -55,16 +55,16 @@ public class UserController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public JsonNode createUser(@RequestBody @Validated(UserDto.Create.class) UserDto userDco) {
-        User user = userDaoService.create(userDco);
+    public JsonNode createUser(@RequestBody @Validated(UserDto.Create.class) UserDto dto) {
+        User user = userDaoService.create(dto);
         return objectMapper.createObjectNode().put("id", user.getId());
     }
 
     @PutMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void modifyUser(@PathVariable("userId") Long userId,
-                           @RequestBody @Validated(UserDto.Update.class) UserDto userDuo) throws StatusException {
-        userDaoService.modify(userId, userDuo);
+                           @RequestBody @Validated(UserDto.Update.class) UserDto dto) throws StatusException {
+        userDaoService.modify(userId, dto);
     }
 
     @DeleteMapping("/{userId}")
