@@ -40,10 +40,10 @@ public class DemoController {
     @PostMapping("/validManual")
     @ResponseStatus(HttpStatus.OK)
     public void validManual(@RequestBody UserDto userDto) {
-        Set<ConstraintViolation<UserDto>> validateSet = validator.validate(userDto, UserDto.class);
+        Set<ConstraintViolation<UserDto>> validateSet = validator.validate(userDto);
         if (!validateSet.isEmpty()) {
             for (ConstraintViolation<UserDto> violation : validateSet) {
-                System.out.println(violation.getMessage());
+                log.info("violation message: {}", violation.getMessage());
             }
         }
     }

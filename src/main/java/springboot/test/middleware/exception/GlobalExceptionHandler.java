@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -72,14 +74,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     // 資料驗證錯誤處理
     private ResponseEntity<Object> handleArgumentInvalid(MethodArgumentNotValidException ex) {
-        String defaultMessage = ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+        FieldError fieldError = (FieldError) ex.getBindingResult().getAllErrors().get(0);
         log.error("\t[Exception] 輸入的參數資料驗證失敗。"
-                + "\t\n 調用方法：" + ex.getParameter().getDeclaringClass() + "." + ex.getParameter().getMethod().getName()
-                + "\t\n 輸入参數類別：" + ex.getBindingResult().getTarget().getClass().getName()
-                + "\t\n 錯誤的参數值：" + ex.getBindingResult().getTarget()
+                + "\t\n 調用方法：" + ex.getParameter().getDeclaringClass().getName() + "." + ex.getParameter().getMethod().getName()
+                + "\t\n 錯誤的参數：" + ex.getBindingResult().getTarget().getClass().getName() + "." + fieldError.getField()
+                + "\t\n 錯誤的值：" + fieldError.getRejectedValue()
                 + "\t\n 錯誤訊息：" + ex.getLocalizedMessage());
 
-        JsonNode jsonNode = objectMapper.createObjectNode().put("message", defaultMessage);
+        JsonNode jsonNode = objectMapper.createObjectNode().put("message", fieldError.getDefaultMessage());
         return ResponseEntity.status(400).body(jsonNode);
     }
 
