@@ -1,16 +1,16 @@
-package springboot.test.dto.bean;
+package springboot.test.dto.basic;
 
 import lombok.Data;
 import org.springframework.data.domain.Page;
 
 @Data
-public class PageBean {
+public class PageDto {
     private int page;
     private int size;
     private int totalPages;
     private long totalElements;
 
-    PageBean(Page page){
+    PageDto(Page page){
         setPage(page.getPageable().getPageNumber() + 1);
         setSize(page.getPageable().getPageSize());
         setTotalElements(page.getTotalElements());

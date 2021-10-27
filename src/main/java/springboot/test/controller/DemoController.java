@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springboot.test.dto.UserDto;
-import springboot.test.dto.ValidList;
+import springboot.test.dto.basic.ValidList;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -19,14 +19,14 @@ import java.util.List;
 public class DemoController {
 
     @PostMapping("/listValidation")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @Validated(UserDto.Create.class)
     public void testListValidation(@RequestBody @Valid List<UserDto> userDtoList) {
 
     }
 
     @PostMapping("/testValidList")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public void testValidList(@RequestBody @Validated(UserDto.Create.class) ValidList<UserDto> userDtoList) {
 
     }

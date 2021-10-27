@@ -1,7 +1,5 @@
 package springboot.test.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.types.Predicate;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
@@ -11,10 +9,11 @@ import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import springboot.test.annotation.ApiPageable;
+import springboot.test.utils.annotation.ApiPageable;
+import springboot.test.dto.basic.CreatedDto;
 import springboot.test.dto.UserDto;
-import springboot.test.dto.bean.I18nBean;
-import springboot.test.dto.bean.PageResultBean;
+import springboot.test.dto.basic.I18nDto;
+import springboot.test.dto.basic.PageResultDto;
 import springboot.test.middleware.exception.StatusException;
 import springboot.test.model.dao.UserDao;
 import springboot.test.model.entity.User;
@@ -32,15 +31,13 @@ public class UserController {
     private UserDao userDao;
     @Autowired
     private UserDaoService userDaoService;
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @ApiPageable
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public PageResultBean<User> getAllUser(@QuerydslPredicate(root = User.class) Predicate predicate,
-                                           final Pageable pageable) {
-        return new PageResultBean<>(userDao.findAll(predicate, pageable));
+    public PageResultDto<User> getAllUser(@QuerydslPredicate(root = User.class) Predicate predicate,
+                                          final Pageable pageable) {
+        return new PageResultDto<>(userDao.findAll(predicate, pageable));
     }
 
     @GetMapping("/{userId}")
@@ -48,16 +45,16 @@ public class UserController {
     public User getOneUser(@PathVariable("userId") Long userId) throws StatusException {
         Optional<User> userOption = userDao.findById(userId);
         if (userOption.isEmpty()) {
-            throw new StatusException(400, I18nBean.key("user.controller.not.found.by.id").args(userId));
+            throw new StatusException(400, I18nDto.key("user.controller.not.found.by.id").args(userId));
         }
         return userOption.get();
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public JsonNode createUser(@RequestBody @Validated(UserDto.Create.class) UserDto dto) {
+    public CreatedDto createUser(@RequestBody @Validated(UserDto.Create.class) UserDto dto) {
         User user = userDaoService.create(dto);
-        return objectMapper.createObjectNode().put("id", user.getId());
+        return new CreatedDto(user.getId());
     }
 
     @PutMapping("/{userId}")

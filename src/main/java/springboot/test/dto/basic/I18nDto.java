@@ -1,4 +1,4 @@
-package springboot.test.dto.bean;
+package springboot.test.dto.basic;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -6,8 +6,8 @@ import springboot.test.utils.StaticApplicationContext;
 
 import java.util.*;
 
-public class I18nBean {
-    private I18nBean(String key) {
+public class I18nDto {
+    private I18nDto(String key) {
         this.key = key;
         this.locale = LocaleContextHolder.getLocale();
     }
@@ -16,11 +16,11 @@ public class I18nBean {
     private List<String> args = new ArrayList<>();
     private Locale locale;
 
-    public static I18nBean key(String key){
-        return new I18nBean(key);
+    public static I18nDto key(String key){
+        return new I18nDto(key);
     }
 
-    public I18nBean args(Object... objects) {
+    public I18nDto args(Object... objects) {
         for (Object object : objects) {
             args.add(Objects.toString(object));
         }

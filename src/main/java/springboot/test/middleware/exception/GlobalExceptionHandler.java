@@ -75,7 +75,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String defaultMessage = ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();
         log.error("\t[Exception] 輸入的參數資料驗證失敗。"
                 + "\t\n 調用方法：" + ex.getParameter().getDeclaringClass() + "." + ex.getParameter().getMethod().getName()
-                + "\t\n 輸入参數名稱：" + ex.getBindingResult().getObjectName()
+                + "\t\n 輸入参數類別：" + ex.getBindingResult().getTarget().getClass().getName()
                 + "\t\n 錯誤的参數值：" + ex.getBindingResult().getTarget()
                 + "\t\n 錯誤訊息：" + ex.getLocalizedMessage());
 

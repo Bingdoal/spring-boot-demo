@@ -1,4 +1,4 @@
-package springboot.test.dto.bean;
+package springboot.test.dto.basic;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -11,24 +11,24 @@ import java.util.List;
 
 @Data
 @Slf4j
-public class PageResultBean<T> {
+public class PageResultDto<T> {
 
-    public PageResultBean(Page<T> pageResult) {
+    public PageResultDto(Page<T> pageResult) {
         this.setContent(pageResult.getContent());
-        setPageable(new PageBean(pageResult));
+        setPageable(new PageDto(pageResult));
     }
 
-    public PageResultBean(Page pageResult, Class<T> convertTo) throws StatusException {
+    public PageResultDto(Page pageResult, Class<T> convertTo) throws StatusException {
         List<T> list = new ArrayList<>();
         for (Object item : pageResult.getContent()) {
             list.add(convertObject(item, convertTo));
         }
         this.setContent(list);
-        setPageable(new PageBean(pageResult));
+        setPageable(new PageDto(pageResult));
     }
 
     private List<T> content;
-    private PageBean pageable;
+    private PageDto pageable;
 
     private T convertObject(Object obj, Class<T> convertTo) throws StatusException {
         try {

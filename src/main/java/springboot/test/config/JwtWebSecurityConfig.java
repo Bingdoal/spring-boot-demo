@@ -20,12 +20,6 @@ public class JwtWebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final String allowLocalAccess = "hasIpAddress('127.0.0.1') or hasIpAddress('::1')";
 
     @Override
-    @Bean
-    public AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Override
     protected void configure(final HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .headers()

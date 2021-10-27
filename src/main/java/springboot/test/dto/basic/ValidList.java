@@ -1,4 +1,4 @@
-package springboot.test.dto;
+package springboot.test.dto.basic;
 
 import lombok.Getter;
 import lombok.experimental.Delegate;

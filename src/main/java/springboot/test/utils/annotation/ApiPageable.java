@@ -1,4 +1,4 @@
-package springboot.test.annotation;
+package springboot.test.utils.annotation;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
