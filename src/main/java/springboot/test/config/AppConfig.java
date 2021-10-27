@@ -45,6 +45,7 @@ public class AppConfig {
     @Bean
     public LocalValidatorFactoryBean localValidatorFactoryBean(MessageSource messageSource) {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        bean.getValidationPropertyMap().put("hibernate.validator.fail_fast", "true");
         bean.setValidationMessageSource(messageSource);
         return bean;
     }
