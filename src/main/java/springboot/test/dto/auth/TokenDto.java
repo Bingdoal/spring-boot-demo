@@ -1,4 +1,4 @@
-package springboot.test.dto;
+package springboot.test.dto.auth;
 
 import lombok.Data;
 
