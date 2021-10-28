@@ -1,4 +1,4 @@
-package springboot.test.dto;
+package springboot.test.dto.basic;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
@@ -13,5 +13,5 @@ public class ApiLogDto {
     private int status;
     private JsonNode requestBody;
     private JsonNode responseBody;
-    private String execMethod;
+    private String operation;
 }

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import springboot.test.dto.ApiLogDto;
+import springboot.test.dto.basic.ApiLogDto;
 import springboot.test.middleware.exception.StatusException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,7 +61,7 @@ public class ApiLoggerAspect {
 
         ApiLogDto apiLogDto = new ApiLogDto();
         apiLogDto.setUrl(requestUri);
-        apiLogDto.setExecMethod(methodName);
+        apiLogDto.setOperation(methodName);
         apiLogDto.setMethod(request.getMethod());
         if (request.getMethod().equalsIgnoreCase("POST")
                 || request.getMethod().equalsIgnoreCase("PUT")) {
