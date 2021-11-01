@@ -47,6 +47,13 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/mydb?useUnicode=true&characterEncoding=utf-8
     username: postgres
+    hikari:
+      maximum-pool-size: 1000
+      minimum-idle: 10
+      connection-timeout: 10000
+      max-lifetime: 1800000
+      idle-timeout: 600000
+      auto-commit: true
   jpa:
     database: POSTGRESQL
     show-sql: false

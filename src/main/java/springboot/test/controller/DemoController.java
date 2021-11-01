@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springboot.test.dto.UserDto;
-import springboot.test.dto.basic.ValidList;
+import springboot.test.validation.ValidList;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;

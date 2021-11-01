@@ -1,4 +1,4 @@
-package springboot.test.dto.basic;
+package springboot.test.validation;
 
 import lombok.Getter;
 import lombok.experimental.Delegate;
