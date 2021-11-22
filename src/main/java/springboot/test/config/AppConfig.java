@@ -28,8 +28,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.LocaleResolver;
-import springboot.test.middleware.filter.JwtAuthorizationFilter;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
@@ -48,16 +46,6 @@ public class AppConfig {
         bean.getValidationPropertyMap().put("hibernate.validator.fail_fast", "true");
         bean.setValidationMessageSource(messageSource);
         return bean;
-    }
-
-    @Bean
-    LocaleResolver localeResolver() {
-        return new HeaderLocaleResolver();
-    }
-
-    @Bean
-    JwtAuthorizationFilter jwtAuthorizationFilter() {
-        return new JwtAuthorizationFilter();
     }
 
     @Bean

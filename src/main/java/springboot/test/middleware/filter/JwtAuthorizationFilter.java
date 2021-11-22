@@ -8,6 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import springboot.test.service.JwtTokenService;
 import springboot.test.utils.SecurityUtil;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @Slf4j
+@Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Autowired
