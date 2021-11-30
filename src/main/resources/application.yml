@@ -12,7 +12,7 @@ logging:
     org.springframework.boot.devtools: WARN
     springfox.documentation.swagger: ERROR
   pattern:
-    console: "%d{dd HH:mm:ss.SSS} %-5level [%8.15thread] %-120.120(%logger{100}.%method %line) %n%m%n"
+    console: "%d{YYYY-MM-dd HH:mm:ss} %-5level [%8.15thread] %-120.120(%logger{100}.%method %line) %n%m%n"
 
 server:
   port: 8080

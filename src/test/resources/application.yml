@@ -1,0 +1,12 @@
+logging:
+  level:
+    root: INFO
+    springboot.test: INFO
+    springboot.test.middleware.exception: OFF
+    springboot.test.dto.basic.I18nDto: OFF
+    com.zaxxer.hikari: WARN
+    org.hibernate: WARN
+    org.flywaydb.core: WARN
+    org.apache.catalina: WARN
+    org.springframework.boot.devtools: WARN
+    springfox.documentation.swagger: ERROR
