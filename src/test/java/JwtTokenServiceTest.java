@@ -1,4 +1,6 @@
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,9 +11,6 @@ import springboot.test.service.JwtTokenService;
 
 import javax.security.auth.message.AuthException;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = JwtTokenService.class)
 public class JwtTokenServiceTest {
@@ -19,16 +18,18 @@ public class JwtTokenServiceTest {
     private JwtTokenService jwtTokenService;
 
     @Test
-    public void testGenerateAndValidJwt() {
+    public void testGenerateAndValidJwt() throws AuthException {
         JwtPayloadDto payloadDto = new JwtPayloadDto("test");
         TokenDto tokenDto = jwtTokenService.generateToken(payloadDto);
 
-        assertThrows(AuthException.class, () -> {
+        Assertions.assertThrows(AuthException.class, () -> {
             jwtTokenService.validateToken("test");
         });
 
-        assertDoesNotThrow(() -> {
+        Assertions.assertDoesNotThrow(() -> {
             jwtTokenService.validateToken(tokenDto.getToken());
         });
+
+        Assert.assertEquals(jwtTokenService.validateToken(tokenDto.getToken()).get("username"), "test");
     }
 }

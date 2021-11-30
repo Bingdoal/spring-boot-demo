@@ -1,11 +1,14 @@
 package springboot.test.dto.basic;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.i18n.LocaleContextHolder;
 import springboot.test.utils.StaticApplicationContext;
 
 import java.util.*;
 
+@Slf4j
 public class I18nDto {
     private I18nDto(String key) {
         this.key = key;
@@ -16,7 +19,7 @@ public class I18nDto {
     private List<String> args = new ArrayList<>();
     private Locale locale;
 
-    public static I18nDto key(String key){
+    public static I18nDto key(String key) {
         return new I18nDto(key);
     }
 
@@ -29,7 +32,13 @@ public class I18nDto {
 
     @Override
     public String toString() {
-        MessageSource messageSource = StaticApplicationContext.getBean(MessageSource.class);
-        return messageSource.getMessage(key, args.toArray(), locale);
+        String str = key;
+        try {
+            MessageSource messageSource = StaticApplicationContext.getBean(MessageSource.class);
+            str = messageSource.getMessage(key, args.toArray(), locale);
+        } catch (Exception ex) {
+            log.warn("I18N toString: {}", ex.getMessage(), ex);
+        }
+        return str;
     }
 }

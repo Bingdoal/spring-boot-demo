@@ -45,7 +45,7 @@ public class UserController {
     public User getOneUser(@PathVariable("userId") Long userId) throws StatusException {
         Optional<User> userOption = userDao.findById(userId);
         if (userOption.isEmpty()) {
-            throw new StatusException(400, I18nDto.key("user.controller.not.found.by.id").args(userId));
+            throw new StatusException(404, I18nDto.key("user.controller.not.found.by.id").args(userId));
         }
         return userOption.get();
     }
