@@ -34,13 +34,12 @@ public class I18nDto {
 
     @Override
     public String toString() {
-        String str = key;
         try {
             MessageSource messageSource = StaticApplicationContext.getBean(MessageSource.class);
-            str = messageSource.getMessage(key, args.toArray(), locale);
+            return messageSource.getMessage(key, args.toArray(), locale);
         } catch (Exception ex) {
             log.warn("I18N toString: {}", ex.getMessage(), ex);
+            return key;
         }
-        return str;
     }
 }
