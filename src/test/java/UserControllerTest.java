@@ -1,14 +1,12 @@
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,7 +25,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {UserController.class})
 @Slf4j
 public class UserControllerTest {
@@ -39,30 +36,29 @@ public class UserControllerTest {
     @MockBean
     private UserDao userDao;
 
-    private User user;
-
-    @Before
+    @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(this.userController)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
-
-        user = new User();
-        user.setId(1L);
-        user.setName("Tony");
-        user.setEmail("Tony@stark.org");
     }
 
     @Test
     public void testGetOneUser() throws Exception {
+        User user;
+        user = new User();
+        user.setId(1L);
+        user.setName("Tony");
+        user.setEmail("Tony@stark.org");
         Mockito.when(userDao.findById(1L)).thenReturn(Optional.of(user));
+
         ResultActions positiveCase = mockMvc.perform(get("/v1/user/1").contentType(MediaType.APPLICATION_JSON));
         positiveCase.andExpect(status().isOk())
                 .andExpect(jsonPath("name").value("Tony"));
 
         ResultActions negativeCase = mockMvc.perform(get("/v1/user/a").contentType(MediaType.APPLICATION_JSON));
         negativeCase.andExpect(status().isBadRequest())
-                .andExpect(result -> Assert.assertTrue(
+                .andExpect(result -> Assertions.assertTrue(
                         result.getResolvedException() instanceof MethodArgumentTypeMismatchException));
 
         ResultActions notFoundCase = mockMvc.perform(get("/v1/user/2")
@@ -70,7 +66,7 @@ public class UserControllerTest {
                 .locale(Locale.TAIWAN));
         // notFoundCase.andDo(print());
         notFoundCase.andExpect(status().isNotFound())
-                .andExpect(result -> Assert.assertTrue(
+                .andExpect(result -> Assertions.assertTrue(
                         result.getResolvedException() instanceof StatusException));
     }
 }
