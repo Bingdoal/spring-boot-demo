@@ -1,4 +1,3 @@
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,11 +21,11 @@ import java.util.Locale;
 import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = {UserController.class})
-@Slf4j
 public class UserControllerTest {
     private MockMvc mockMvc;
     @Autowired
@@ -41,30 +40,35 @@ public class UserControllerTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(this.userController)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
-    }
-
-    @Test
-    public void testGetOneUser() throws Exception {
         User user;
         user = new User();
         user.setId(1L);
         user.setName("Tony");
         user.setEmail("Tony@stark.org");
         Mockito.when(userDao.findById(1L)).thenReturn(Optional.of(user));
+    }
 
+    @Test
+    public void testGetOneUser() throws Exception {
         ResultActions positiveCase = mockMvc.perform(get("/v1/user/1").contentType(MediaType.APPLICATION_JSON));
         positiveCase.andExpect(status().isOk())
                 .andExpect(jsonPath("name").value("Tony"));
+    }
 
-        ResultActions negativeCase = mockMvc.perform(get("/v1/user/a").contentType(MediaType.APPLICATION_JSON));
+    @Test
+    public void testGetUserA() throws Exception {
+        ResultActions negativeCase = mockMvc.perform(get("/v1/user/A").contentType(MediaType.APPLICATION_JSON));
         negativeCase.andExpect(status().isBadRequest())
                 .andExpect(result -> Assertions.assertTrue(
                         result.getResolvedException() instanceof MethodArgumentTypeMismatchException));
+    }
 
+    @Test
+    public void testGetUser2() throws Exception {
         ResultActions notFoundCase = mockMvc.perform(get("/v1/user/2")
                 .contentType(MediaType.APPLICATION_JSON)
                 .locale(Locale.TAIWAN));
-        // notFoundCase.andDo(print());
+        notFoundCase.andDo(print());
         notFoundCase.andExpect(status().isNotFound())
                 .andExpect(result -> Assertions.assertTrue(
                         result.getResolvedException() instanceof StatusException));
