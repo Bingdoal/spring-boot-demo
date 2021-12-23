@@ -1,4 +1,4 @@
-package springboot.test.utils;
+package springboot.test.utils.properties;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

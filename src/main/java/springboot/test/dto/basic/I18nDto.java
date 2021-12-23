@@ -3,7 +3,7 @@ package springboot.test.dto.basic;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import springboot.test.utils.StaticApplicationContext;
+import springboot.test.utils.ApplicationContextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class I18nDto {
     @Override
     public String toString() {
         try {
-            MessageSource messageSource = StaticApplicationContext.getBean(MessageSource.class);
+            MessageSource messageSource = ApplicationContextUtils.getBean(MessageSource.class);
             return messageSource.getMessage(key, args.toArray(), locale);
         } catch (Exception ex) {
             log.warn("I18N toString: {}", ex.getMessage(), ex);

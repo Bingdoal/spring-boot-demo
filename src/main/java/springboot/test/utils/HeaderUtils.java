@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
-public class HeaderUtil {
+public class HeaderUtils {
     public static String getUsername() {
         return Objects.toString(getTokenPayload("username"), "");
     }

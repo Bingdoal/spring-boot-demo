@@ -11,6 +11,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.*;
+import java.util.stream.Collectors;
 
 public class XSSWrapper extends HttpServletRequestWrapper {
     private byte[] rawData;
@@ -21,6 +22,10 @@ public class XSSWrapper extends HttpServletRequestWrapper {
         super(request);
         this.request = request;
         this.servletStream = new ResettableServletInputStream();
+    }
+
+    public String getBody() throws IOException {
+        return getReader().lines().collect(Collectors.joining());
     }
 
     @Override

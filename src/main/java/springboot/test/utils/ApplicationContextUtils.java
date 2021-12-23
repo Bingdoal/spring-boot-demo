@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Component
-public class StaticApplicationContext {
-    private static StaticApplicationContext instance;
+public class ApplicationContextUtils {
+    private static ApplicationContextUtils instance;
 
     @Autowired
     private ApplicationContext applicationContext;

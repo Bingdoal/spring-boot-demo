@@ -9,7 +9,7 @@ import springboot.test.dto.auth.JwtPayloadDto;
 import springboot.test.dto.auth.LoginDto;
 import springboot.test.dto.auth.TokenDto;
 import springboot.test.service.JwtTokenService;
-import springboot.test.utils.HeaderUtil;
+import springboot.test.utils.HeaderUtils;
 
 import javax.validation.Valid;
 
@@ -30,8 +30,8 @@ public class AuthController {
     @PostMapping("/refresh")
     @ResponseStatus(HttpStatus.OK)
     public TokenDto refresh() {
-        log.info("Refresh: {}", HeaderUtil.getUsername());
-        return jwtTokenService.generateToken(new JwtPayloadDto(HeaderUtil.getUsername()));
+        log.info("Refresh: {}", HeaderUtils.getUsername());
+        return jwtTokenService.generateToken(new JwtPayloadDto(HeaderUtils.getUsername()));
     }
 
     @PostMapping("/logout")
