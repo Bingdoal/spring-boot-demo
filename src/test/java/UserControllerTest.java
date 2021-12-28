@@ -10,12 +10,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import springboot.test.controller.UserController;
-import springboot.test.middleware.exception.GlobalExceptionHandler;
-import springboot.test.middleware.exception.StatusException;
-import springboot.test.model.dao.UserDao;
-import springboot.test.model.entity.User;
-import springboot.test.service.UserDaoService;
+import springboot.demo.controller.UserController;
+import springboot.demo.middleware.exception.GlobalExceptionHandler;
+import springboot.demo.middleware.exception.StatusException;
+import springboot.demo.model.dao.UserDao;
+import springboot.demo.model.entity.User;
+import springboot.demo.service.UserDaoService;
 
 import java.util.Locale;
 import java.util.Optional;

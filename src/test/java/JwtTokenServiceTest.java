@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import springboot.test.dto.auth.JwtPayloadDto;
-import springboot.test.dto.auth.TokenDto;
-import springboot.test.service.JwtTokenService;
+import springboot.demo.dto.auth.JwtPayloadDto;
+import springboot.demo.dto.auth.TokenDto;
+import springboot.demo.service.JwtTokenService;
 
 import javax.security.auth.message.AuthException;
 
