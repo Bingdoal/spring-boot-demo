@@ -18,6 +18,17 @@ server:
   port: 8080
   version: 1.0.0
   name: spring-demo
+
+graphql:
+  graphiql:
+    enabled: true
+  servlet:
+    enabled: true
+    cors-enabled: true
+    exception-handlers-enabled: true
+  playground:
+    enabled: true
+
 spring:
   main:
     web-application-type: servlet
