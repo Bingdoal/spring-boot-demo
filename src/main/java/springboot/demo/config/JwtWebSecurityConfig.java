@@ -18,6 +18,8 @@ public class JwtWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${swagger.enable}")
     private boolean swaggerEnable;
+    @Value("${graphql.voyager.enabled}")
+    private boolean voyagerEnable;
     @Value("${graphql.graphiql.enabled}")
     private boolean graphiqlEnable;
 
@@ -27,9 +29,15 @@ public class JwtWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers()
                 .contentSecurityPolicy("script-src 'self'");
 
+        if(voyagerEnable){
+            httpSecurity.authorizeRequests()
+                    .antMatchers("/voyager").permitAll()
+                    .antMatchers("/vendor/voyager/**").permitAll();
+        }
+
         if (graphiqlEnable) {
             httpSecurity.authorizeRequests()
-                    .antMatchers("/vendor/**").permitAll()
+                    .antMatchers("/vendor/graphiql/**").permitAll()
                     .antMatchers("/graphiql").permitAll()
                     .antMatchers("/graphql").permitAll();
         }

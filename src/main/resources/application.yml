@@ -23,6 +23,8 @@ swagger:
   enable: true
 
 graphql:
+  tools:
+    schema-location-pattern: "graphql/*.graphql"
   graphiql:
     enabled: true
   servlet:
@@ -31,6 +33,8 @@ graphql:
     exception-handlers-enabled: true
   playground:
     enabled: false
+  voyager:
+    enabled: true
 
 spring:
   main:

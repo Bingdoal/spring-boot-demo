@@ -1,0 +1,38 @@
+input Filter{
+    field: String!
+    condition: FilterCondition!
+}
+
+input FilterCondition{
+    eq: String!
+    neq: String!
+    like: String!
+    in: [String!]!
+    nin: [String!]!
+    gt: String!
+    gte: String!
+    lt: String!
+    lte: String!
+}
+
+input SelectParam{
+    page: Int
+    size: Int
+    sort: String
+}
+
+type PageInfo{
+    totalPages: Int
+    totalElements: Int
+}
+
+type Query{
+    hello: String!
+
+    userList:[User!]!
+    user(id:ID!): User
+
+    postList:[Post!]!
+    post(id:ID!): Post
+#    postPagination(selectParam: SelectParam):PostPage!
+}

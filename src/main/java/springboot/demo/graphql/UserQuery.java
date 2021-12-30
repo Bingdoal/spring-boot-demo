@@ -8,7 +8,6 @@ import springboot.demo.model.dao.UserDao;
 import springboot.demo.model.entity.QUser;
 import springboot.demo.model.entity.User;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -18,7 +17,7 @@ public class UserQuery implements GraphQLQueryResolver {
     @Autowired
     private UserDao userDao;
 
-    public List<User> userList() {
+    public Iterable<User> getUserList() {
         return userDao.findAll();
     }
 

@@ -1,0 +1,11 @@
+type User{
+    id: ID!
+    name:String
+    email:String
+}
+
+input UserFilter{
+    id: ID
+    name: String
+    email:String
+}
