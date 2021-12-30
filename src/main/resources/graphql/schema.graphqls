@@ -1,10 +1,18 @@
 type User{
-    id: ID
+    id: ID!
     name:String
     email:String
 }
 
+type Post{
+    id: ID!
+    content:String
+    author:User!
+}
+
 type Query{
-    userList:[User!]
-    user(id:ID): User
+    userList:[User!]!
+    user(id:ID!): User
+    postList:[Post!]!
+    post(id:ID!): Post
 }

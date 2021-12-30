@@ -18,15 +18,15 @@ public class UserDaoService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User create(UserDto userDco) {
+    public User create(UserDto userDto) {
         User user = new User();
-        user.setName(userDco.getName());
-        user.setPassword(passwordEncoder.encode(userDco.getPassword()));
-        user.setEmail(userDco.getEmail());
+        user.setName(userDto.getName());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setEmail(userDto.getEmail());
         return userDao.save(user);
     }
 
-    public User modify(Long userId, UserDto userDuo) throws StatusException {
+    public User modify(Long userId, UserDto userDto) throws StatusException {
         Optional<User> optUser = userDao.findById(userId);
         User user;
         if (optUser.isPresent()) {
@@ -34,7 +34,7 @@ public class UserDaoService {
         } else {
             throw new StatusException(400, "UserId " + userId + " do not exist.");
         }
-        MyBeanUtils.copyProperties(userDuo, user, false);
+        MyBeanUtils.copyProperties(userDto, user, false);
         return userDao.save(user);
     }
 }

@@ -1,7 +1,10 @@
 package springboot.demo.middleware.filter;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -17,6 +20,9 @@ import java.io.IOException;
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class XSSFilter extends OncePerRequestFilter {
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Override
     public void doFilterInternal(HttpServletRequest req,
                                  HttpServletResponse res,
@@ -25,7 +31,11 @@ public class XSSFilter extends OncePerRequestFilter {
         String body = wrappedRequest.getBody();
         final String queryString = (req.getQueryString() == null) ? "" : "?" + req.getQueryString();
         log.info("\t[Request] {} {}{}", req.getMethod(), req.getRequestURI(), queryString);
-        if (log.isDebugEnabled() &&
+        if (req.getRequestURI().equals("/graphql")) {
+            JsonNode jsonNode = objectMapper.readTree(body);
+            log.info("\t[Request] Body: {}", body);
+            log.info("\t[Request] Query:\n{}", jsonNode.path("query").asText().replace("\\n", "\n"));
+        } else if (log.isDebugEnabled() &&
                 (req.getMethod().equalsIgnoreCase("POST") ||
                         req.getMethod().equalsIgnoreCase("PUT"))) {
             log.debug("\t[Request] Body: {}", body);

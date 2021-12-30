@@ -1,5 +1,7 @@
 package springboot.demo.config;
 
+import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +15,9 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
 public class SwaggerConfig {
+    @Value("${swagger.enable}")
+    private boolean swaggerEnable;
+
     @Bean
     public Docket swaggerSetting() {
         ApiInfo apiInfo = new ApiInfoBuilder()
@@ -26,8 +31,8 @@ public class SwaggerConfig {
                 .ignoredParameterTypes(Pageable.class)
                 .apiInfo(apiInfo)
                 .select()
-                .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
+                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
                 .paths(PathSelectors.any())
-                .build();
+                .build().enable(swaggerEnable);
     }
 }

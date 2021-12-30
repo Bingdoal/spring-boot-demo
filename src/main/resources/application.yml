@@ -19,6 +19,9 @@ server:
   version: 1.0.0
   name: spring-demo
 
+swagger:
+  enable: true
+
 graphql:
   graphiql:
     enabled: true
@@ -27,7 +30,7 @@ graphql:
     cors-enabled: true
     exception-handlers-enabled: true
   playground:
-    enabled: true
+    enabled: false
 
 spring:
   main:
