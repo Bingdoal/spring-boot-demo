@@ -36,3 +36,7 @@ type Query{
     post(id:ID!): Post
 #    postPagination(selectParam: SelectParam):PostPage!
 }
+
+type Mutation{
+    createPost(content:String!, authorId:Int!): Post
+}
