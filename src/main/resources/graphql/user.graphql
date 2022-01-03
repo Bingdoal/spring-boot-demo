@@ -5,7 +5,6 @@ type User{
 }
 
 input UserFilter{
-    id: ID
     name: String
     email:String
 }

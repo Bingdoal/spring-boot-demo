@@ -30,12 +30,14 @@ type Query{
     hello: String!
 
     userList:[User!]!
+    userSearch(filter:UserFilter!):[User!]!
     user(id:ID!): User
 
     postList:[Post!]!
     post(id:ID!): Post
-#    postPagination(selectParam: SelectParam):PostPage!
 }
+
+scalar DateTime
 
 type Mutation{
     createPost(content:String!, authorId:Int!): Post

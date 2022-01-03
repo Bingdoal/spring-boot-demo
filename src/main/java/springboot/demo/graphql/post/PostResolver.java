@@ -8,8 +8,6 @@ import springboot.demo.model.dao.UserDao;
 import springboot.demo.model.entity.Post;
 import springboot.demo.model.entity.User;
 
-import java.time.ZoneId;
-
 @Slf4j
 @Component
 public class PostResolver implements GraphQLResolver<Post> {

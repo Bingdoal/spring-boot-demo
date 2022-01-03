@@ -26,4 +26,10 @@ public class UserQuery implements GraphQLQueryResolver {
         return userOpt.orElse(null);
     }
 
+    public Iterable<User> userSearch(User user) {
+        return userDao.findAll(
+                QUser.user.email.contains(user.getEmail()).and(
+                        QUser.user.name.contains(user.getName())
+                ));
+    }
 }
