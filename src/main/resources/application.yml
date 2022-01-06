@@ -74,7 +74,7 @@ spring:
       auto-commit: true
   jpa:
     database: POSTGRESQL
-    show-sql: false
+    show-sql: true
     open-in-view: true
     properties:
       hibernate:

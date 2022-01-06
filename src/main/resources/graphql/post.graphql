@@ -8,5 +8,6 @@ type Post{
 
 type PostPage{
     content: [Post!]!
-    pageable: PageInfo
+    pageable: PageInfo!
 }
+

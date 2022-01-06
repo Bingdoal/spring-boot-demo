@@ -22,4 +22,5 @@ public class PostQuery implements GraphQLQueryResolver {
     public Post getPost(Long id) {
         return postDao.findById(id).orElse(null);
     }
+
 }
