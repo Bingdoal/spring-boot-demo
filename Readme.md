@@ -20,3 +20,11 @@
 + [x] unit test
 + [x] exception handler
 + [ ] GraphQL
+  + [x] Query
+  + [x] Field Resolver
+  + [x] Scalar Type
+  + [x] Mutation
+  + [x] Data Loader
+  + [ ] Directive
+  + [ ] interface、Union
+  + [ ] Authorization

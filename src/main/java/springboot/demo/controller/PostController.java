@@ -17,6 +17,7 @@ import springboot.demo.model.entity.Post;
 import springboot.demo.service.PostDaoService;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Api("Post")
@@ -34,6 +35,12 @@ public class PostController {
     public PageResultDto<Post> fetchAllPost(@QuerydslPredicate(root = Post.class) Predicate predicate,
                                             final Pageable pageable) {
         return new PageResultDto<>(postDao.findAll(predicate, pageable));
+    }
+
+    @GetMapping("/user/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Post> fetchAllPostByUsername(@PathVariable("username") String username) {
+        return postDaoService.findByUsername(username);
     }
 
     @PostMapping("")
