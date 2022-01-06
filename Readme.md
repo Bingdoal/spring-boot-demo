@@ -19,6 +19,7 @@
 + [x] i18n
 + [x] unit test
 + [x] exception handler
++ [ ] WebSocket
 + [ ] GraphQL
   + [x] Query
   + [x] Field Resolver
@@ -27,4 +28,6 @@
   + [x] Data Loader
   + [ ] Directive
   + [ ] interface、Union
+  + [ ] Subscription
   + [ ] Authorization
+  + [ ] Test

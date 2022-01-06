@@ -11,3 +11,8 @@ type PostPage{
     pageable: PageInfo!
 }
 
+input PostCreateInput{
+    content: String
+    authorId: ID
+}
+

@@ -33,7 +33,8 @@ public class DateTimeScalarConfig {
                     public LocalDateTime parseValue(@NotNull final Object input) {
                         try {
                             if (input instanceof String) {
-                                return LocalDateTime.parse((String) input);
+                                return LocalDateTime.parse((String) input,
+                                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                             } else {
                                 throw new CoercingParseValueException("Expected a String");
                             }
@@ -48,7 +49,8 @@ public class DateTimeScalarConfig {
                     public LocalDateTime parseLiteral(@NotNull final Object input) {
                         if (input instanceof StringValue) {
                             try {
-                                return LocalDateTime.parse(((StringValue) input).getValue());
+                                return LocalDateTime.parse(((StringValue) input).getValue(),
+                                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                             } catch (DateTimeParseException e) {
                                 throw new CoercingParseLiteralException(e);
                             }

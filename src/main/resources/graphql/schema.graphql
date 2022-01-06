@@ -23,5 +23,6 @@ type Query{
 scalar DateTime
 
 type Mutation{
-    createPost(content:String!, authorId:Int!): Post
+    createPost(postCreateInput:PostCreateInput): Post
+    addOneDay(datetime: DateTime): DateTime
 }
