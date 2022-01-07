@@ -1,6 +1,11 @@
 directive @uppercase on FIELD_DEFINITION
 directive @isAuthorization on FIELD_DEFINITION
 
+union Result = User | Post
+
+interface Node{
+    id: ID!
+}
 
 input Pagination{
     page: Int
@@ -12,8 +17,18 @@ type PageInfo{
     totalElements: Int
 }
 
+enum Source{
+    USER
+    POST
+}
+
 type Query{
     hello: String! @uppercase
+    exception: String!
+    runtimeException: String!
+
+    node(source:Source!,id:ID!): Node
+    nodeList(source:Source!,ids:[ID!]): [Node!]!
 
     userList:[User!]!
     userSearch(filter:UserFilter!):[User!]!

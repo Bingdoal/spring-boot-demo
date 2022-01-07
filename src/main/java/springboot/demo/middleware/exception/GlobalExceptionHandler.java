@@ -2,6 +2,9 @@ package springboot.demo.middleware.exception;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import graphql.GraphQLError;
+import graphql.GraphqlErrorBuilder;
+import graphql.kickstart.spring.error.ErrorContext;
 import lombok.extern.slf4j.Slf4j;
 import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +20,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 @ControllerAdvice
 @Slf4j
@@ -28,6 +35,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("{}: {}", ex.getCode(), ex.getMessage(), ex);
         JsonNode jsonNode = ex.getJsonNode();
         return ResponseEntity.status(ex.getCode()).body(jsonNode);
+    }
+
+    @ExceptionHandler(value = GraphQLStatusException.class)
+    public GraphQLError toCustomError(GraphQLStatusException ex, ErrorContext errorContext) {
+        log.error("{}: {}", ex.getCode(), ex.getMessage(), ex);
+        Map<String, Object> extensions =
+                Optional.ofNullable(errorContext.getExtensions()).orElseGet(HashMap::new);
+        extensions.put(Objects.toString(ex.getCode()), ex.getMessage());
+        return GraphqlErrorBuilder.newError()
+                .message(ex.getMessage())
+                .extensions(extensions)
+                .errorType(errorContext.getErrorType())
+                .path(errorContext.getPath())
+                .build();
     }
 
     @ExceptionHandler(RuntimeStatusException.class)

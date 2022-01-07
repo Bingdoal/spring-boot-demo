@@ -1,4 +1,4 @@
-type Post{
+type Post implements Node{
     id: ID!
     content:String
     author:User!

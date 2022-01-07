@@ -27,8 +27,8 @@
   + [x] Mutation
   + [x] Data Loader
   + [ ] Exception Handler
-  + [ ] Directive
+  + [x] Directive
+  + [x] Authorization
   + [ ] interface、Union
   + [ ] Subscription
-  + [ ] Authorization
   + [ ] Test
