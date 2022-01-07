@@ -27,7 +27,7 @@ type Query{
     exception: String!
     runtimeException: String!
 
-    node(source:Source!,id:ID!): Node
+    target(source:Source!,id:ID!): Result
     nodeList(source:Source!,ids:[ID!]): [Node!]!
 
     userList:[User!]!

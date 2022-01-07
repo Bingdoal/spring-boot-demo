@@ -18,7 +18,7 @@ public class NodeQuery implements GraphQLQueryResolver {
     @Autowired
     private PostDao postDao;
 
-    public EntityBase node(Source source, long id) {
+    public Object target(Source source, long id) {
         switch (source) {
             case POST:
                 Optional<Post> postOpt = postDao.findOne(QPost.post.id.eq(id));
