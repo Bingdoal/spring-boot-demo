@@ -14,8 +14,6 @@ import org.springframework.context.annotation.Configuration;
 import springboot.demo.middleware.exception.RuntimeStatusException;
 import springboot.demo.service.JwtTokenService;
 
-import javax.security.auth.message.AuthException;
-
 @Configuration
 @Slf4j
 public class AuthorizationConfig {
@@ -30,10 +28,10 @@ public class AuthorizationConfig {
                 DataFetcher dataFetcher = DataFetcherFactories.wrapDataFetcher(env.getFieldDataFetcher(),
                         (dataFetchingEnvironment, value) -> {
                             GraphQLServletContext context = dataFetchingEnvironment.getContext();
-                            String token = context.getHttpServletRequest().getHeader("Authorization").replaceFirst("Bearer ", "");
                             try {
+                                String token = context.getHttpServletRequest().getHeader("Authorization").replaceFirst("Bearer ", "");
                                 jwtTokenService.validateToken(token);
-                            } catch (AuthException e) {
+                            } catch (Exception e) {
                                 throw new RuntimeStatusException(403, e.getMessage());
                             }
                             return value;

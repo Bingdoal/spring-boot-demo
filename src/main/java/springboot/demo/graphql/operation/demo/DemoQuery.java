@@ -1,9 +1,10 @@
-package springboot.demo.graphql.schema.demo;
+package springboot.demo.graphql.operation.demo;
 
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import springboot.demo.middleware.exception.GraphQLStatusException;
+import springboot.demo.middleware.exception.RuntimeStatusException;
 import springboot.demo.middleware.exception.StatusException;
 
 @Component
@@ -13,17 +14,15 @@ public class DemoQuery implements GraphQLQueryResolver {
         return "world";
     }
 
+    public String graphQLStatusException() {
+        throw new GraphQLStatusException(400, "GraphQLStatusException test.");
+    }
+
     public String runtimeException() {
-        if (true) {
-            throw new GraphQLStatusException(400, "GraphQLStatusException test.");
-        }
-        return "world";
+        throw new RuntimeStatusException(400, "RuntimeStatusException test.");
     }
 
     public String exception() throws StatusException {
-        if (true) {
-            throw new StatusException(400, "StatusException test.");
-        }
-        return "world";
+        throw new StatusException(400, "StatusException test.");
     }
 }

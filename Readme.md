@@ -26,9 +26,9 @@
   + [x] Scalar Type
   + [x] Mutation
   + [x] Data Loader
-  + [ ] Exception Handler
+  + [x] Exception Handler
   + [x] Directive
   + [x] Authorization
-  + [ ] interface、Union
+  + [x] interface、Union
   + [ ] Subscription
   + [ ] Test

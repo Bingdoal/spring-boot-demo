@@ -1,4 +1,4 @@
-package springboot.demo.graphql.schema.post;
+package springboot.demo.graphql.operation.post;
 
 import graphql.kickstart.tools.GraphQLResolver;
 import graphql.schema.DataFetchingEnvironment;

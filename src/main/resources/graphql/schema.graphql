@@ -23,7 +23,8 @@ enum Source{
 }
 
 type Query{
-    hello: String! @uppercase
+    hello: String! @uppercase @isAuthorization
+    graphQLStatusException: String!
     exception: String!
     runtimeException: String!
 
@@ -34,8 +35,8 @@ type Query{
     userSearch(filter:UserFilter!):[User!]!
     user(id:ID!): User
 
-    postList:[Post!]! @isAuthorization
-    post(id:ID!): Post @isAuthorization
+    postList:[Post!]!
+    post(id:ID!): Post
 }
 
 scalar DateTime

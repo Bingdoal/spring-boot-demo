@@ -22,7 +22,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @ControllerAdvice
@@ -42,10 +41,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("{}: {}", ex.getCode(), ex.getMessage(), ex);
         Map<String, Object> extensions =
                 Optional.ofNullable(errorContext.getExtensions()).orElseGet(HashMap::new);
-        extensions.put(Objects.toString(ex.getCode()), ex.getMessage());
+        extensions.put("status", ex.getCode());
+        extensions.put("message", ex.getMessage());
         return GraphqlErrorBuilder.newError()
                 .message(ex.getMessage())
                 .extensions(extensions)
+                .locations(errorContext.getLocations())
                 .errorType(errorContext.getErrorType())
                 .path(errorContext.getPath())
                 .build();

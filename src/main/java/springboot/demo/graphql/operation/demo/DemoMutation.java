@@ -1,4 +1,4 @@
-package springboot.demo.graphql.schema.demo;
+package springboot.demo.graphql.operation.demo;
 
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.stereotype.Component;

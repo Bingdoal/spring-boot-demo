@@ -1,4 +1,4 @@
-package springboot.demo.graphql.schema.node;
+package springboot.demo.graphql.operation.node;
 
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;

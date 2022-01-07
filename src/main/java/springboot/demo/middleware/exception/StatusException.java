@@ -1,10 +1,9 @@
 package springboot.demo.middleware.exception;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import springboot.demo.dto.basic.I18nDto;
+import springboot.demo.middleware.exception.base.ExceptionBase;
 
 @EqualsAndHashCode(callSuper = true)
 public class StatusException extends ExceptionBase {

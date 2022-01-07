@@ -2,6 +2,7 @@ package springboot.demo.middleware.exception;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import springboot.demo.dto.basic.I18nDto;
+import springboot.demo.middleware.exception.base.RuntimeExceptionBase;
 
 public class RuntimeStatusException extends RuntimeExceptionBase {
     public RuntimeStatusException(int httpStatus, String message) {

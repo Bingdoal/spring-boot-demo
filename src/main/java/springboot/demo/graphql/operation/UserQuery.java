@@ -1,4 +1,4 @@
-package springboot.demo.graphql.schema;
+package springboot.demo.graphql.operation;
 
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import lombok.extern.slf4j.Slf4j;
