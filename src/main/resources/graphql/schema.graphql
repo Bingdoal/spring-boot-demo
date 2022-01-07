@@ -1,3 +1,7 @@
+directive @uppercase on FIELD_DEFINITION
+directive @isAuthorization on FIELD_DEFINITION
+
+
 input Pagination{
     page: Int
     size: Int
@@ -8,16 +12,15 @@ type PageInfo{
     totalElements: Int
 }
 
-
 type Query{
-    hello: String!
+    hello: String! @uppercase
 
     userList:[User!]!
     userSearch(filter:UserFilter!):[User!]!
     user(id:ID!): User
 
-    postList:[Post!]!
-    post(id:ID!): Post
+    postList:[Post!]! @isAuthorization
+    post(id:ID!): Post @isAuthorization
 }
 
 scalar DateTime

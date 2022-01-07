@@ -1,4 +1,4 @@
-package springboot.demo.graphql.dataloader;
+package springboot.demo.graphql;
 
 import graphql.kickstart.execution.context.DefaultGraphQLContext;
 import graphql.kickstart.execution.context.GraphQLContext;
@@ -8,6 +8,7 @@ import graphql.kickstart.servlet.context.GraphQLServletContextBuilder;
 import org.dataloader.DataLoaderRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import springboot.demo.graphql.dataloader.AuthorDataLoader;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

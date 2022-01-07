@@ -40,6 +40,7 @@ public class XSSFilter extends OncePerRequestFilter {
                         req.getMethod().equalsIgnoreCase("PUT"))) {
             log.debug("\t[Request] Body: {}", body);
         }
+
         if (!StringUtils.isBlank(body)) {
             body = XSSWrapper.stripXSS(body);
             wrappedRequest.resetInputStream(body.getBytes());

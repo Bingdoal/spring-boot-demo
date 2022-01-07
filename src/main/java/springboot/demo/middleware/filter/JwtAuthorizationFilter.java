@@ -67,7 +67,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
             } catch (Exception e) {
-                throw new BadCredentialsException(e.getMessage());
+                log.warn("BadCredentialsException: {}", e.getMessage());
+//                throw new BadCredentialsException(e.getMessage());
             }
         }
         try {

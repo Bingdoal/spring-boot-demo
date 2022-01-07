@@ -18,7 +18,7 @@
 + [x] ConfigurationProperties
 + [x] i18n
 + [x] unit test
-+ [x] exception handler
++ [x] Exception Handler
 + [ ] WebSocket
 + [ ] GraphQL
   + [x] Query
@@ -26,6 +26,7 @@
   + [x] Scalar Type
   + [x] Mutation
   + [x] Data Loader
+  + [ ] Exception Handler
   + [ ] Directive
   + [ ] interface、Union
   + [ ] Subscription

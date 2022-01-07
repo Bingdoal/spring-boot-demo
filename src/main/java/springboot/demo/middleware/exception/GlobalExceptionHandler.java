@@ -30,6 +30,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(ex.getCode()).body(jsonNode);
     }
 
+    @ExceptionHandler(RuntimeStatusException.class)
+    public ResponseEntity<?> handleRuntimeStatusException(RuntimeStatusException ex) {
+        log.error("{}: {}", ex.getCode(), ex.getMessage(), ex);
+        JsonNode jsonNode = ex.getJsonNode();
+        return ResponseEntity.status(ex.getCode()).body(jsonNode);
+    }
+
     @ExceptionHandler(PSQLException.class)
     public ResponseEntity<?> handleSQLException(PSQLException ex) {
         log.error("PSQLException: {}", ex.getMessage(), ex);
