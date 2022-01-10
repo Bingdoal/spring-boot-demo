@@ -196,9 +196,9 @@
                     <fork>true</fork>
                     <addResources>true</addResources>
                     <jvmArguments>-Dfile.encoding=UTF8 -Dspring.profiles.active=dev</jvmArguments>
-                    <!--<jvmArguments>-->
-                    <!--	-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005-->
-                    <!--</jvmArguments>-->
+<!--                    <jvmArguments>-->
+<!--                    	-Dfile.encoding=UTF8 -Dspring.profiles.active=dev -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005-->
+<!--                    </jvmArguments>-->
                 </configuration>
             </plugin>
             <!--QueryDSL-->

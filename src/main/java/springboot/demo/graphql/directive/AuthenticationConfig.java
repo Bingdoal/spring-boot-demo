@@ -11,28 +11,29 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springboot.demo.middleware.exception.RuntimeStatusException;
+import springboot.demo.middleware.exception.GraphQLStatusException;
 import springboot.demo.service.JwtTokenService;
 
 @Configuration
 @Slf4j
-public class AuthorizationConfig {
+public class AuthenticationConfig {
     @Autowired
     private JwtTokenService jwtTokenService;
 
     @Bean
-    public SchemaDirective authorizationDirective() {
-        return new SchemaDirective("isAuthorization", new SchemaDirectiveWiring() {
+    public SchemaDirective isAuthenticatedDirective() {
+        return new SchemaDirective("isAuthenticated", new SchemaDirectiveWiring() {
             @Override
             public GraphQLFieldDefinition onField(SchemaDirectiveWiringEnvironment<GraphQLFieldDefinition> env) {
                 DataFetcher dataFetcher = DataFetcherFactories.wrapDataFetcher(env.getFieldDataFetcher(),
                         (dataFetchingEnvironment, value) -> {
                             GraphQLServletContext context = dataFetchingEnvironment.getContext();
                             try {
-                                String token = context.getHttpServletRequest().getHeader("Authorization").replaceFirst("Bearer ", "");
+                                String token = context.getHttpServletRequest().getHeader("Authorization")
+                                        .replaceFirst("Bearer ", "");
                                 jwtTokenService.validateToken(token);
                             } catch (Exception e) {
-                                throw new RuntimeStatusException(403, e.getMessage());
+                                throw new GraphQLStatusException(403, e.getMessage());
                             }
                             return value;
                         });

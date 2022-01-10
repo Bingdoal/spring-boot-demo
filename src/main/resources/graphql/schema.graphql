@@ -1,5 +1,5 @@
-directive @uppercase on FIELD_DEFINITION
-directive @isAuthorization on FIELD_DEFINITION
+directive @caseConvert(convert: String) on FIELD_DEFINITION
+directive @isAuthenticated on FIELD_DEFINITION
 
 union Result = User | Post
 
@@ -23,7 +23,7 @@ enum Source{
 }
 
 type Query{
-    hello: String! @uppercase @isAuthorization
+    hello: String! @caseConvert(convert: "UPPER") @isAuthenticated
     graphQLStatusException: String!
     exception: String!
     runtimeException: String!
