@@ -18,6 +18,9 @@ public class PageResultDto<T> {
         setPageable(new PageDto(pageResult));
     }
 
+    private List<T> content;
+    private PageDto pageable;
+
     public PageResultDto(Page pageResult, Class<T> convertTo) throws StatusException {
         List<T> list = new ArrayList<>();
         for (Object item : pageResult.getContent()) {
@@ -27,8 +30,6 @@ public class PageResultDto<T> {
         setPageable(new PageDto(pageResult));
     }
 
-    private List<T> content;
-    private PageDto pageable;
 
     private T convertObject(Object obj, Class<T> convertTo) throws StatusException {
         try {

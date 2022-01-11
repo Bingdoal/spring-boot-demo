@@ -4,6 +4,11 @@ type User implements Node{
     email:String
 }
 
+type PageUser{
+    content: [User!]!
+    pageable: PageInfo!
+}
+
 input UserFilter{
     name: String
     email:String

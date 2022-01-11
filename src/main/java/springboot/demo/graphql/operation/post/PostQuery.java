@@ -3,7 +3,10 @@ package springboot.demo.graphql.operation.post;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import springboot.demo.dto.basic.PageDto;
+import springboot.demo.dto.basic.PageResultDto;
 import springboot.demo.model.dao.PostDao;
 import springboot.demo.model.entity.Post;
 
@@ -23,4 +26,8 @@ public class PostQuery implements GraphQLQueryResolver {
         return postDao.findById(id).orElse(null);
     }
 
+    public PageResultDto<Post> pagePost(PageDto pageDto) {
+        Pageable pageable = Pageable.ofSize(pageDto.getSize()).withPage(pageDto.getPage() - 1);
+        return new PageResultDto<>(postDao.findAll(pageable));
+    }
 }

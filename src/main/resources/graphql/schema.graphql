@@ -33,9 +33,11 @@ type Query{
 
     userList:[User!]!
     userSearch(filter:UserFilter!):[User!]!
+    pageUser(pagination:Pagination):PageUser!
     user(id:ID!): User
 
     postList:[Post!]!
+    pagePost(pagination:Pagination):PostPage!
     post(id:ID!): Post
 }
 
