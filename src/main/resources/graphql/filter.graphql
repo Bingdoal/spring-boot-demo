@@ -1,0 +1,58 @@
+interface PageObject{
+    pageable: PageInfo!
+}
+
+input Pagination{
+    page: Int
+    size: Int
+}
+
+type PageInfo{
+    totalPages: Int
+    totalElements: Int
+}
+
+input StringExpression {
+    eq: String
+    neq: String
+    contains: String
+    in: [String!]
+    isNull: Boolean
+    notNull: Boolean
+}
+
+input IntExpression {
+    eq: Int
+    neq: Int
+    gt: Int
+    gte: Int
+    lt: Int
+    lte: Int
+    in: [Int!]
+    isNull: Boolean
+    notNull: Boolean
+}
+
+input DatetimeExpression {
+    eq: Int
+    neq: Int
+    gt: Int
+    gte: Int
+    lt: Int
+    lte: Int
+    in: [Int!]
+    isNull: Boolean
+    notNull: Boolean
+}
+
+input FloatExpression {
+    eq: Float
+    neq: Float
+    gt: Float
+    gte: Float
+    lt: Float
+    lte: Float
+    in: [Float!]
+    isNull: Boolean
+    notNull: Boolean
+}

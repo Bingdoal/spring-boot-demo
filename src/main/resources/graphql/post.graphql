@@ -5,7 +5,7 @@ type Post implements Node{
     creationTime: DateTime!
 }
 
-type PostPage{
+type PostPage implements PageObject{
     content: [Post!]!
     pageable: PageInfo!
 }
@@ -15,3 +15,8 @@ input PostCreateInput{
     authorId: ID
 }
 
+input PostFilter{
+    id: IntExpression
+    content: StringExpression
+    creationTime: DatetimeExpression
+}

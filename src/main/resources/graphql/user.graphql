@@ -4,7 +4,7 @@ type User implements Node{
     email:String
 }
 
-type PageUser{
+type PageUser implements PageObject{
     content: [User!]!
     pageable: PageInfo!
 }

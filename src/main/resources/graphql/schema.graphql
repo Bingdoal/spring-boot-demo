@@ -3,18 +3,10 @@ directive @isAuthenticated on FIELD_DEFINITION
 
 union Result = User | Post
 
+scalar DateTime
+
 interface Node{
     id: ID!
-}
-
-input Pagination{
-    page: Int
-    size: Int
-}
-
-type PageInfo{
-    totalPages: Int
-    totalElements: Int
 }
 
 enum Source{
@@ -38,10 +30,9 @@ type Query{
 
     postList:[Post!]!
     pagePost(pagination:Pagination):PostPage!
+    postFilter(filter: PostFilter,pagination:Pagination): PostPage!
     post(id:ID!): Post
 }
-
-scalar DateTime
 
 type Mutation{
     createPost(postCreateInput:PostCreateInput): Post

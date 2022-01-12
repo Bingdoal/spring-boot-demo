@@ -1,6 +1,7 @@
 package springboot.demo.dto.basic;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Data
 @Slf4j
+@NoArgsConstructor
 public class PageResultDto<T> {
 
     public PageResultDto(Page<T> pageResult) {

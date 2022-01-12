@@ -18,4 +18,18 @@ public class PageDto {
         setTotalElements(page.getTotalElements());
         setTotalPages(page.getTotalPages());
     }
+//
+//    public int getSize() {
+//        if (size <= 0) {
+//            return 10;
+//        }
+//        return size;
+//    }
+//
+//    public int getPage() {
+//        if (page <= 0) {
+//            return 1;
+//        }
+//        return page;
+//    }
 }
