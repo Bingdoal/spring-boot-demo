@@ -4,6 +4,7 @@ directive @isAuthenticated on FIELD_DEFINITION
 union Result = User | Post
 
 scalar DateTime
+scalar Upload
 
 interface Node{
     id: ID!
@@ -37,4 +38,5 @@ type Query{
 type Mutation{
     createPost(postCreateInput:PostCreateInput): Post
     addOneDay(datetime: DateTime): DateTime
+    uploadFile(files:[Upload!]!): String
 }

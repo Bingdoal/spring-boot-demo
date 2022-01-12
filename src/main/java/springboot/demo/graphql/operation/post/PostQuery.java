@@ -1,8 +1,6 @@
 package springboot.demo.graphql.operation.post;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import graphql.kickstart.tools.GraphQLQueryResolver;
-import graphql.schema.DataFetchingEnvironment;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +31,7 @@ public class PostQuery implements GraphQLQueryResolver {
         return new PageResultDto<>(postDao.findAll(pageable));
     }
 
-    public PageResultDto<Post> postFilter(PostFilter filter, PageDto pageDto, DataFetchingEnvironment env) {
+    public PageResultDto<Post> postFilter(PostFilter filter, PageDto pageDto) {
 
         return null;
     }

@@ -31,10 +31,14 @@ public class XSSFilter extends OncePerRequestFilter {
         String body = wrappedRequest.getBody();
         final String queryString = (req.getQueryString() == null) ? "" : "?" + req.getQueryString();
         log.info("\t[Request] {} {}{}", req.getMethod(), req.getRequestURI(), queryString);
+        log.info("\t[Request] Content-Type: {}", req.getContentType());
         if (req.getRequestURI().equals("/graphql")) {
-            JsonNode jsonNode = objectMapper.readTree(body);
             log.info("\t[Request] Body: {}", body);
-            log.info("\t[Request] Query:\n{}", jsonNode.path("query").asText().replace("\\n", "\n"));
+            try {
+                JsonNode jsonNode = objectMapper.readTree(body);
+                log.info("\t[Request] Query:\n{}", jsonNode.path("query").asText().replace("\\n", "\n"));
+            } catch (Exception ignore) {
+            }
         } else if (log.isDebugEnabled() &&
                 (req.getMethod().equalsIgnoreCase("POST") ||
                         req.getMethod().equalsIgnoreCase("PUT"))) {
