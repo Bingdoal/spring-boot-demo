@@ -2,6 +2,10 @@ package springboot.demo.middleware.exception;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import graphql.kickstart.spring.error.ErrorContext;
@@ -20,9 +24,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @ControllerAdvice
 @Slf4j
@@ -85,11 +92,32 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleExceptionInternal(final Exception ex, final Object body, final HttpHeaders headers,
-                                                             final HttpStatus status, final WebRequest request) {
+    protected ResponseEntity<Object> handleExceptionInternal(final Exception ex, final Object body,
+                                                             final HttpHeaders headers,
+                                                             final HttpStatus status,
+                                                             final WebRequest request) {
+
         if (ex instanceof MethodArgumentNotValidException) {
             return handleArgumentInvalid((MethodArgumentNotValidException) ex);
         }
+        // 處理入參為 Enum 類型的錯誤訊息
+        if (ex.getCause() != null && ex.getCause() instanceof InvalidFormatException) {
+            final Pattern enumErrorMessagePattern = Pattern.compile("from String \"(.*)\": not one of the values accepted for Enum class: (\\[.*\\])");
+            final Matcher matcher = enumErrorMessagePattern.matcher(ex.getCause().getMessage());
+            if (matcher.find()) {
+                final Matcher matcher2 = Pattern.compile("\\[\"(.*)\"\\]\\)$").matcher(ex.getCause().getMessage());
+                if (matcher2.find()) {
+                    final String fieldName = matcher2.group(1);
+                    final String rejectedValue = matcher.group(1);
+                    final String enumMemberSet = matcher.group(2);
+                    final String message = MessageFormat.format("The input value ({0}) of argument ''{1}'' must be one of {2}.", rejectedValue, fieldName, enumMemberSet);
+                    log.error("\t[CEH] Enum validation is failed. Message: {}", message);
+                    final ObjectNode json = JsonNodeFactory.instance.objectNode().put("code", status.value()).put("message", message);
+                    return new ResponseEntity<>(json, status);
+                }
+            }
+        }
+
         if (ex instanceof MethodArgumentTypeMismatchException) {
             return handleTypeMismatch((MethodArgumentTypeMismatchException) ex);
         }
@@ -100,6 +128,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     // 資料驗證錯誤處理
     private ResponseEntity<Object> handleArgumentInvalid(MethodArgumentNotValidException ex) {
+        ObjectNode jsonNode = objectMapper.createObjectNode();
+        final ArrayNode messages = jsonNode.putArray("message");
+        ex.getBindingResult().getAllErrors().forEach(error -> {
+            final String fieldName = ((FieldError) error).getField();
+            final String rejectedValue = ((FieldError) error).getRejectedValue() == null ? "null" : ((FieldError) error).getRejectedValue().toString();
+            final String errorMessage = error.getDefaultMessage();
+            final String message = MessageFormat.format("The input value ({0}) of argument ''{1}'' {2}.", rejectedValue, fieldName, errorMessage);
+            messages.add(message);
+        });
+
         FieldError fieldError = (FieldError) ex.getBindingResult().getAllErrors().get(0);
         log.error("\t[Exception] 輸入的參數資料驗證失敗。"
                 + "\t\n 調用方法：" + ex.getParameter().getDeclaringClass().getName() + "." + ex.getParameter().getMethod().getName()
@@ -107,7 +145,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 + "\t\n 錯誤的值：" + fieldError.getRejectedValue()
                 + "\t\n 錯誤訊息：" + ex.getLocalizedMessage());
 
-        JsonNode jsonNode = objectMapper.createObjectNode().put("message", fieldError.getDefaultMessage());
         return ResponseEntity.status(400).body(jsonNode);
     }
 

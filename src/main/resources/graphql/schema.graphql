@@ -16,7 +16,7 @@ enum Source{
 }
 
 type Query{
-    hello: String! @caseConvert(convert: "UPPER") @isAuthenticated
+    hello: String! @caseConvert(convert: "UPPER")
     graphQLStatusException: String!
     exception: String!
     runtimeException: String!

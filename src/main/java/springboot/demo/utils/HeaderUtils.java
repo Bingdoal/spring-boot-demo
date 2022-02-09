@@ -25,7 +25,7 @@ public class HeaderUtils {
         }
     }
 
-    private static String getHeader(String key) {
+    public static String get(String key) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         return request.getHeader(key);
     }

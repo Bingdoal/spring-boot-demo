@@ -1,6 +1,8 @@
 package springboot.demo.graphql.operation.demo;
 
+import graphql.kickstart.servlet.context.GraphQLServletContext;
 import graphql.kickstart.tools.GraphQLQueryResolver;
+import graphql.schema.DataFetchingEnvironment;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import springboot.demo.middleware.exception.GraphQLStatusException;
@@ -10,7 +12,10 @@ import springboot.demo.middleware.exception.StatusException;
 @Component
 @Slf4j
 public class DemoQuery implements GraphQLQueryResolver {
-    public String hello() {
+    public String hello(DataFetchingEnvironment env) {
+        GraphQLServletContext context = env.getContext();
+        String token = context.getHttpServletRequest().getHeader("Authorization");
+        log.info("Authorization: {}", token);
         return "world";
     }
 
