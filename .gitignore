@@ -7,3 +7,4 @@ target/
 *.7z
 *.exe
 *.log
+application-dev.yml

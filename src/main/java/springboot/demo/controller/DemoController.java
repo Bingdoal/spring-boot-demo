@@ -69,7 +69,7 @@ public class DemoController {
     public void backupDB(@RequestBody DbInputDto dbInputDto) throws StatusException {
         switch (dbInputDto.getDbType()) {
             case influxdb:
-                dbDumpService.dumpInfluxdb("influx_" + System.currentTimeMillis() + ".dump");
+                dbDumpService.dumpInfluxdb("influx_" + System.currentTimeMillis() + ".tar");
                 return;
             case postgresql:
                 dbDumpService.dumpPostgres("postgresql_" + System.currentTimeMillis() + ".sql");

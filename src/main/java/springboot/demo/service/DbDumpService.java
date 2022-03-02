@@ -43,10 +43,13 @@ public class DbDumpService {
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
             throw new StatusException(500, "Influx dump cli not support on Windows");
         }
-
+        String dumpDir = "influx_dump_" + System.currentTimeMillis();
         String cmd = "/usr/bin/influxd backup -portable -db " + influxInfo.getDatabase() +
                 " -host " + influxInfo.getHost() + ":" + influxInfo.getBackupPort() +
-                " " + outputFile;
+                " " + dumpDir;
+        cmd += " && tar -cf " + outputFile + " " + dumpDir;
+        cmd += " && rm -rf " + dumpDir;
+
         CmdResultDto resultDto = cmdExecuteService.execute(cmd);
         if (!resultDto.isSuccess()) {
             throw new StatusException(500, "Dump influxdb failed");
