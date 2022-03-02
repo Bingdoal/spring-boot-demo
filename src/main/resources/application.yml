@@ -62,8 +62,11 @@ spring:
   #  Database
   # =======================
   datasource:
+    host: localhost
+    port: 5432
+    database: mydb
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/mydb?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:postgresql://${spring.datasource.host}:${spring.datasource.port}/${spring.datasource.database}?useUnicode=true&characterEncoding=utf-8
     username: postgres
     hikari:
       maximum-pool-size: 1000
@@ -88,5 +91,12 @@ spring:
   flyway:
     baseline-version: 1.0
     enabled: false
-
+  influx:
+    host: 60.251.156.215
+    port: 8086
+    backup-port: 8088
+    url: http://${spring.influx.host}:${spring.influx.port}
+    database: lwm2m
+    user: admin
+    password: 1qaz@WSX
 

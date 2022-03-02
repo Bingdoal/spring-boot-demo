@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "spring.datasource")
 public class DatasourceInfo {
+    private String host;
+    private int port;
+    private String database;
     private String url;
     private String username;
     private String password;

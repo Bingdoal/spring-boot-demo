@@ -49,12 +49,18 @@ public class JwtWebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/v3/api-docs").permitAll();
         }
 
+//        httpSecurity
+//                .csrf().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+//                .authorizeRequests()
+//                .antMatchers("/v1/auth/login").permitAll()
+//                .anyRequest().authenticated();
+
         httpSecurity
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/v1/auth/login").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
 
 
         httpSecurity

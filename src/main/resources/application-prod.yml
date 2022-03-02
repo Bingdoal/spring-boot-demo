@@ -19,12 +19,20 @@ spring:
   #  Database
   # =======================
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOST:postgres-svc}:${POSTGRES_PORT:5678}/${POSTGRES_DB:postgres}?useUnicode=true&characterEncoding=utf-8
+    host: ${POSTGRES_HOST:postgres-svc}
+    port: ${POSTGRES_PORT:5678}
+    database: ${POSTGRES_DB:postgres}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
   jpa:
     properties:
       hibernate:
         default_schema: ${POSTGRES_SCHEMA:public}
+  influx:
+    host: ${INFLUXDB_HOST:influxdb-svc}
+    port: ${INFLUXDB_PORT:8086}
+    database: ${INFLUXDB_DB}
+    user: ${INFLUXDB_USER}
+    password: ${INFLUXDB_PASSWORD}
 
 
