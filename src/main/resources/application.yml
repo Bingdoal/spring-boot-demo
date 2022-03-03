@@ -11,6 +11,10 @@ logging:
     org.apache.catalina: WARN
     org.springframework.boot.devtools: WARN
     springfox.documentation.swagger: ERROR
+    springboot:
+      demo:
+        middleware:
+          filter: DEBUG
   pattern:
     console: "%d{YYYY-MM-dd HH:mm:ss} %-5level [%8.15thread] %-120.120(%logger{100}.%method %line) %n%m%n"
 
@@ -102,8 +106,9 @@ spring:
     password: admin
   file-server:
     http:
+      url: http://${spring.file-server.http.host}:${spring.file-server.http.port}/
       host: localhost
-      port: admin
+      port: 9898
       user: admin
       password: admin
 

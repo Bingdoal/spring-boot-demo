@@ -27,6 +27,11 @@ public class XSSFilter extends OncePerRequestFilter {
     public void doFilterInternal(HttpServletRequest req,
                                  HttpServletResponse res,
                                  FilterChain chain) throws IOException, ServletException {
+        if (req.getContentType() != null &&
+                req.getContentType().contains("multipart/form-data")) {
+            chain.doFilter(req, res);
+            return;
+        }
         XSSWrapper wrappedRequest = new XSSWrapper(req);
         String body = wrappedRequest.getBody();
         final String queryString = (req.getQueryString() == null) ? "" : "?" + req.getQueryString();
@@ -39,9 +44,8 @@ public class XSSFilter extends OncePerRequestFilter {
                 log.info("\t[Request] Query:\n{}", jsonNode.path("query").asText().replace("\\n", "\n"));
             } catch (Exception ignore) {
             }
-        } else if (log.isDebugEnabled() &&
-                (req.getMethod().equalsIgnoreCase("POST") ||
-                        req.getMethod().equalsIgnoreCase("PUT"))) {
+        } else if ((req.getMethod().equalsIgnoreCase("POST") ||
+                req.getMethod().equalsIgnoreCase("PUT"))) {
             log.debug("\t[Request] Body: {}", body);
         }
 
