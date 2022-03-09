@@ -35,7 +35,9 @@ public class DbDumpService {
 
         CmdResultDto resultDto = cmdExecuteService.execute(cmd);
         if (!resultDto.isSuccess()) {
-            throw new StatusException(500, "Dump postgres failed");
+            throw new StatusException(500, "Dump postgres failed: "
+                    + resultDto.getExitCode() + ": "
+                    + resultDto.getError());
         }
     }
 
@@ -52,7 +54,9 @@ public class DbDumpService {
 
         CmdResultDto resultDto = cmdExecuteService.execute(cmd);
         if (!resultDto.isSuccess()) {
-            throw new StatusException(500, "Dump influxdb failed");
+            throw new StatusException(500, "Dump influxdb failed: "
+                    + resultDto.getExitCode() + ": "
+                    + resultDto.getError());
         }
     }
 }

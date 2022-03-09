@@ -30,16 +30,29 @@ public class CmdExecuteService {
             log.info("CMD: {}", String.join(" ", cmds));
 
             StringBuilder output = new StringBuilder();
-            BufferedReader reader = new BufferedReader(
+            BufferedReader outReader = new BufferedReader(
                     new InputStreamReader(process.getInputStream()));
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = outReader.readLine()) != null) {
                 output.append(line).append("\n");
             }
+
             cmdResultDto.setResult(output.toString().trim());
             log.info("output: {}", cmdResultDto.getResult());
             cmdResultDto.setExitCode(process.waitFor());
+
             cmdResultDto.setSuccess(cmdResultDto.getExitCode() == 0);
+            if (!cmdResultDto.isSuccess()) {
+                BufferedReader errReader = new BufferedReader(
+                        new InputStreamReader(process.getErrorStream()));
+                StringBuilder error = new StringBuilder();
+                while ((line = errReader.readLine()) != null) {
+                    error.append(line).append("\n");
+                }
+                cmdResultDto.setError(error.toString().trim());
+                log.info("error: {}", cmdResultDto.getError());
+            }
+
             return cmdResultDto;
         } catch (Exception e) {
             log.error("CMD: {} => error: {}", String.join(" ", cmds), e.getMessage(), e);

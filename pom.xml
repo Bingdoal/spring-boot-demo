@@ -160,7 +160,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!--GraphQL-->
+<!--        GraphQL-->
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
             <artifactId>graphql-spring-boot-starter</artifactId>
