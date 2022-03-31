@@ -18,7 +18,14 @@ public class DbDumpService {
     @Autowired
     private InfluxInfo influxInfo;
 
+    private boolean postgresLock = false;
+    private boolean influxdbLock = false;
+
     public void dumpPostgres(String outputFile) throws StatusException {
+        if (postgresLock) {
+            throw new StatusException(400, "PostgreSQL dump is running...");
+        }
+        postgresLock = true;
         String setEnv;
         String cmd;
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
@@ -32,8 +39,8 @@ public class DbDumpService {
                     " -U " + datasourceInfo.getUsername() + " -d " + datasourceInfo.getDatabase() +
                     " -f " + outputFile;
         }
-
         CmdResultDto resultDto = cmdExecuteService.execute(cmd);
+        postgresLock = false;
         if (!resultDto.isSuccess()) {
             throw new StatusException(500, "Dump postgres failed: "
                     + resultDto.getExitCode() + ": "
@@ -45,14 +52,18 @@ public class DbDumpService {
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
             throw new StatusException(500, "Influx dump cli not support on Windows");
         }
+        if (influxdbLock) {
+            throw new StatusException(400, "InfluxDB dump is running...");
+        }
+        influxdbLock = true;
         String dumpDir = "influx_dump_" + System.currentTimeMillis();
         String cmd = "/usr/bin/influxd backup -portable -db " + influxInfo.getDatabase() +
                 " -host " + influxInfo.getHost() + ":" + influxInfo.getBackupPort() +
                 " " + dumpDir;
         cmd += " && tar -cf " + outputFile + " " + dumpDir;
         cmd += " && rm -rf " + dumpDir;
-
         CmdResultDto resultDto = cmdExecuteService.execute(cmd);
+        influxdbLock = false;
         if (!resultDto.isSuccess()) {
             throw new StatusException(500, "Dump influxdb failed: "
                     + resultDto.getExitCode() + ": "

@@ -85,7 +85,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.3.2</version>
+            <version>42.3.3</version>
         </dependency>
 
         <!--QueryDSL-->
@@ -105,7 +105,7 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>8.5.0</version>
+            <version>8.5.2</version>
         </dependency>
 
         <!--AOP-->
@@ -160,7 +160,7 @@
             <scope>test</scope>
         </dependency>
 
-<!--        GraphQL-->
+        <!-- GraphQL-->
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
             <artifactId>graphql-spring-boot-starter</artifactId>
@@ -208,9 +208,7 @@
                             <goal>process</goal>
                         </goals>
                         <configuration>
-                            <!-- Specifies the directory in which the query types are generated -->
                             <outputDirectory>.apt_generated</outputDirectory>
-                            <!-- States that the APT code generator should look for JPA annotations -->
                             <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
                         </configuration>
                     </execution>

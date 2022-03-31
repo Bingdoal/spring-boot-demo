@@ -27,6 +27,7 @@ public class AppListener implements ApplicationListener<ContextRefreshedEvent> {
 
     private void flywayMigrate() {
         final Flyway flyway = Flyway.configure()
+                .locations("classpath:db/migration")
                 .baselineOnMigrate(true)
                 .target(MigrationVersion.LATEST)
                 .dataSource(datasourceInfo.getUrl(), datasourceInfo.getUsername(), datasourceInfo.getPassword())

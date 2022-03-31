@@ -11,8 +11,8 @@ import javax.validation.groups.Default;
 
 @Data
 public class UserDto {
-    @NotBlank(groups = Create.class)
-    @Size(max = 255)
+    @NotBlank(groups = Create.class,message = "{NotBlank.userDto.name}")
+    @Size(min = 2, max = 255, message = "{Size.userDto.name}")
     private String name;
 
     @NotBlank(groups = Create.class)
@@ -22,7 +22,7 @@ public class UserDto {
 
     @NotBlank(groups = Create.class)
     @Size(max = 255, groups = {Update.class, Create.class})
-    @Email()
+    @Email(message = "{Email.userDto.email}")
     private String email;
 
     public interface Create extends Default {
