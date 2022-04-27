@@ -94,10 +94,12 @@ spring:
   #  Flyway
   # ==========================
   flyway:
-    baseline-version: 1.0
     enabled: false
+    baseline-version: 1.0
     baseline-on-migrate: true
     validate-on-migrate: true
+    out-of-order: false
+    target: latest
     locations: classpath:db/migration
     url: ${spring.datasource.url}
     user: ${spring.datasource.username}

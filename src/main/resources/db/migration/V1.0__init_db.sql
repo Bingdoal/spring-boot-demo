@@ -1,6 +1,3 @@
--- TABLE: user
-DROP TABLE IF EXISTS "user" ;
-
 CREATE TABLE "user"
 (
     "id" bigserial NOT NULL PRIMARY KEY,
@@ -10,5 +7,3 @@ CREATE TABLE "user"
     "creation_time" timestamp with time zone,
     "modification_time" timestamp with time zone
 );
-
----
