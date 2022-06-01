@@ -36,8 +36,8 @@ import java.util.regex.Pattern;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @ExceptionHandler(StatusException.class)
-    public ResponseEntity<?> handleStatusException(StatusException ex) {
+    @ExceptionHandler(RestException.class)
+    public ResponseEntity<?> handleStatusException(RestException ex) {
         log.error("{}: {}", ex.getCode(), ex.getMessage(), ex);
         JsonNode jsonNode = ex.getJsonNode();
         return ResponseEntity.status(ex.getCode()).body(jsonNode);

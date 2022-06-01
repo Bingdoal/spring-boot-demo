@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import springboot.demo.middleware.exception.GraphQLStatusException;
 import springboot.demo.middleware.exception.RuntimeStatusException;
-import springboot.demo.middleware.exception.StatusException;
+import springboot.demo.middleware.exception.RestException;
 
 @Component
 @Slf4j
@@ -27,7 +27,7 @@ public class DemoQuery implements GraphQLQueryResolver {
         throw new RuntimeStatusException(400, "RuntimeStatusException test.");
     }
 
-    public String exception() throws StatusException {
-        throw new StatusException(400, "StatusException test.");
+    public String exception() throws RestException {
+        throw new RestException(400, "StatusException test.");
     }
 }

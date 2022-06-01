@@ -10,7 +10,7 @@ import springboot.demo.dto.CmdInputDto;
 import springboot.demo.dto.CmdResultDto;
 import springboot.demo.dto.DbInputDto;
 import springboot.demo.dto.UserDto;
-import springboot.demo.middleware.exception.StatusException;
+import springboot.demo.middleware.exception.RestException;
 import springboot.demo.service.CmdExecuteService;
 import springboot.demo.service.DbDumpService;
 import springboot.demo.validation.ValidList;
@@ -60,13 +60,13 @@ public class DemoController {
 
     @PostMapping("/execCmd")
     @ResponseStatus(HttpStatus.OK)
-    public CmdResultDto execCmd(@RequestBody @Valid CmdInputDto cmdInputDto) throws StatusException {
+    public CmdResultDto execCmd(@RequestBody @Valid CmdInputDto cmdInputDto) throws RestException {
         return cmdExecuteService.execute(cmdInputDto.getCmds().toArray(new String[0]));
     }
 
     @PostMapping("/backupDB")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void backupDB(@RequestBody DbInputDto dbInputDto) throws StatusException {
+    public void backupDB(@RequestBody DbInputDto dbInputDto) throws RestException {
         switch (dbInputDto.getDbType()) {
             case influxdb:
                 dbDumpService.dumpInfluxdb("influx_" + System.currentTimeMillis() + ".tar");

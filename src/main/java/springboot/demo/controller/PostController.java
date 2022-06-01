@@ -11,7 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springboot.demo.dto.PostDto;
 import springboot.demo.dto.basic.PageResultDto;
-import springboot.demo.middleware.exception.StatusException;
+import springboot.demo.middleware.exception.RestException;
 import springboot.demo.model.dao.PostDao;
 import springboot.demo.model.entity.Post;
 import springboot.demo.service.PostDaoService;
@@ -52,10 +52,10 @@ public class PostController {
     @PutMapping("/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Post modifyPost(@PathVariable("postId") Long postId,
-                           @RequestBody @Validated(PostDto.Update.class) PostDto postDto) throws StatusException {
+                           @RequestBody @Validated(PostDto.Update.class) PostDto postDto) throws RestException {
         Optional<Post> postOpt = postDao.findById(postId);
         if (postOpt.isEmpty()) {
-            throw new StatusException(404, "Post id(" + postId + ") not found.");
+            throw new RestException(404, "Post id(" + postId + ") not found.");
         }
         Post post = postOpt.get();
         post.setContent(postDto.getContent());
@@ -64,9 +64,9 @@ public class PostController {
 
     @DeleteMapping("/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePost(@PathVariable("postId") Long postId) throws StatusException {
+    public void deletePost(@PathVariable("postId") Long postId) throws RestException {
         if (!postDao.existsById(postId)) {
-            throw new StatusException(404, "Post id(" + postId + ") not found.");
+            throw new RestException(404, "Post id(" + postId + ") not found.");
         }
         postDao.deleteById(postId);
     }

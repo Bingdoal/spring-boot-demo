@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import springboot.demo.controller.UserController;
 import springboot.demo.middleware.exception.GlobalExceptionHandler;
-import springboot.demo.middleware.exception.StatusException;
+import springboot.demo.middleware.exception.RestException;
 import springboot.demo.model.dao.UserDao;
 import springboot.demo.model.entity.User;
 import springboot.demo.service.UserDaoService;
@@ -71,6 +71,6 @@ public class UserControllerTest {
         notFoundCase.andDo(print());
         notFoundCase.andExpect(status().isNotFound())
                 .andExpect(result -> Assertions.assertTrue(
-                        result.getResolvedException() instanceof StatusException));
+                        result.getResolvedException() instanceof RestException));
     }
 }

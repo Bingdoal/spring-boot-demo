@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import springboot.demo.dto.basic.ApiLogDto;
-import springboot.demo.middleware.exception.StatusException;
+import springboot.demo.middleware.exception.RestException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +42,7 @@ public class ApiLoggerAspect {
             Object returnValue = joinPoint.proceed();
             apiLogDto = getApiLog(joinPoint, returnValue);
             return returnValue;
-        } catch (StatusException e) {
+        } catch (RestException e) {
             apiLogDto = getApiLog(joinPoint, e.getJsonNode());
             apiLogDto.setStatus(e.getCode());
             throw e;

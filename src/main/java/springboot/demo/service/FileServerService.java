@@ -13,7 +13,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import springboot.demo.dto.FileCreateDto;
 import springboot.demo.dto.FileDto;
-import springboot.demo.middleware.exception.StatusException;
+import springboot.demo.middleware.exception.RestException;
 import springboot.demo.utils.properties.HttpFileServerInfo;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class FileServerService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public List<FileDto> getList(String path) throws StatusException {
+    public List<FileDto> getList(String path) throws RestException {
         String url = httpFileServerInfo.getUrl() + "/" + path + "?json=true&_=" + System.currentTimeMillis();
         final HttpEntity<JsonNode> requestEntity = new HttpEntity<>(getHeaders());
         try {
@@ -37,22 +37,22 @@ public class FileServerService {
                     new TypeReference<List<FileDto>>() {
                     });
         } catch (final HttpStatusCodeException e) {
-            throw new StatusException(e.getStatusCode().value(), e.getResponseBodyAsString());
+            throw new RestException(e.getStatusCode().value(), e.getResponseBodyAsString());
         }
     }
 
-    public FileDto getInfo(String path) throws StatusException {
+    public FileDto getInfo(String path) throws RestException {
         String url = httpFileServerInfo.getUrl() + "/" + path + "?op=info&_=" + System.currentTimeMillis();
         final HttpEntity<JsonNode> requestEntity = new HttpEntity<>(getHeaders());
         try {
             final ResponseEntity<JsonNode> responseEntity = this.restTemplate.exchange(url, HttpMethod.GET, requestEntity, JsonNode.class);
             return objectMapper.convertValue(responseEntity.getBody(), FileDto.class);
         } catch (final HttpStatusCodeException e) {
-            throw new StatusException(e.getStatusCode().value(), e.getResponseBodyAsString());
+            throw new RestException(e.getStatusCode().value(), e.getResponseBodyAsString());
         }
     }
 
-    public FileCreateDto upload(String path, final String filename, byte[] file) throws StatusException {
+    public FileCreateDto upload(String path, final String filename, byte[] file) throws RestException {
         String url = httpFileServerInfo.getUrl() + "/" + path + "?json=true&_=" + System.currentTimeMillis();
         HttpHeaders httpHeaders = getHeaders();
         httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -74,32 +74,32 @@ public class FileServerService {
             final ResponseEntity<JsonNode> responseEntity = this.restTemplate.exchange(url, HttpMethod.POST, requestEntity, JsonNode.class);
             return objectMapper.convertValue(responseEntity.getBody(), FileCreateDto.class);
         } catch (final HttpStatusCodeException e) {
-            throw new StatusException(e.getStatusCode().value(), e.getResponseBodyAsString());
+            throw new RestException(e.getStatusCode().value(), e.getResponseBodyAsString());
         }
     }
 
-    public FileCreateDto createFolder(String path) throws StatusException {
+    public FileCreateDto createFolder(String path) throws RestException {
         String url = httpFileServerInfo.getUrl() + "/" + path + "?json=true&_=" + System.currentTimeMillis();
         final HttpEntity<JsonNode> requestEntity = new HttpEntity<>(getHeaders());
         try {
             final ResponseEntity<JsonNode> responseEntity = this.restTemplate.exchange(url, HttpMethod.POST, requestEntity, JsonNode.class);
             return objectMapper.convertValue(responseEntity.getBody(), FileCreateDto.class);
         } catch (final HttpStatusCodeException e) {
-            throw new StatusException(e.getStatusCode().value(), e.getResponseBodyAsString());
+            throw new RestException(e.getStatusCode().value(), e.getResponseBodyAsString());
         }
     }
 
-    public void delete(String path) throws StatusException {
+    public void delete(String path) throws RestException {
         String url = httpFileServerInfo.getUrl() + "/" + path + "?json=true&_=" + System.currentTimeMillis();
         final HttpEntity<String> requestEntity = new HttpEntity<>(getHeaders());
         try {
             final ResponseEntity<String> responseEntity = this.restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, String.class);
         } catch (final HttpStatusCodeException e) {
-            throw new StatusException(e.getStatusCode().value(), e.getResponseBodyAsString());
+            throw new RestException(e.getStatusCode().value(), e.getResponseBodyAsString());
         }
     }
 
-    public ByteArrayResource download(String path) throws StatusException {
+    public ByteArrayResource download(String path) throws RestException {
         FileDto fileDto = getInfo(path);
         String[] tmp = path.split("[/\\\\]");
         final String filename = tmp[tmp.length - 1];
@@ -119,25 +119,25 @@ public class FileServerService {
         };
     }
 
-    public byte[] downloadFile(String path) throws StatusException {
+    public byte[] downloadFile(String path) throws RestException {
         String url = httpFileServerInfo.getUrl() + "/" + path + "?download=true&_=" + System.currentTimeMillis();
         final HttpEntity<JsonNode> requestEntity = new HttpEntity<>(getHeaders());
         try {
             final ResponseEntity<byte[]> responseEntity = this.restTemplate.exchange(url, HttpMethod.GET, requestEntity, byte[].class);
             return responseEntity.getBody();
         } catch (final HttpStatusCodeException e) {
-            throw new StatusException(e.getStatusCode().value(), e.getResponseBodyAsString());
+            throw new RestException(e.getStatusCode().value(), e.getResponseBodyAsString());
         }
     }
 
-    public byte[] downloadFolder(String path) throws StatusException {
+    public byte[] downloadFolder(String path) throws RestException {
         String url = httpFileServerInfo.getUrl() + "/" + path + "?op=archive&_=" + System.currentTimeMillis();
         final HttpEntity<JsonNode> requestEntity = new HttpEntity<>(getHeaders());
         try {
             final ResponseEntity<byte[]> responseEntity = this.restTemplate.exchange(url, HttpMethod.GET, requestEntity, byte[].class);
             return responseEntity.getBody();
         } catch (final HttpStatusCodeException e) {
-            throw new StatusException(e.getStatusCode().value(), e.getResponseBodyAsString());
+            throw new RestException(e.getStatusCode().value(), e.getResponseBodyAsString());
         }
     }
 

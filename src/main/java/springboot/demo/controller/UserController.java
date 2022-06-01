@@ -13,7 +13,7 @@ import springboot.demo.dto.UserDto;
 import springboot.demo.dto.basic.CreatedDto;
 import springboot.demo.dto.basic.I18nDto;
 import springboot.demo.dto.basic.PageResultDto;
-import springboot.demo.middleware.exception.StatusException;
+import springboot.demo.middleware.exception.RestException;
 import springboot.demo.model.dao.UserDao;
 import springboot.demo.model.entity.User;
 import springboot.demo.service.UserDaoService;
@@ -42,10 +42,10 @@ public class UserController {
 
     @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public User getOneUser(@PathVariable("userId") Long userId) throws StatusException {
+    public User getOneUser(@PathVariable("userId") Long userId) throws RestException {
         Optional<User> userOption = userDao.findById(userId);
         if (userOption.isEmpty()) {
-            throw new StatusException(404, I18nDto.key("user.controller.not.found.by.id").args(userId));
+            throw new RestException(404, I18nDto.key("user.controller.not.found.by.id").args(userId));
         }
         return userOption.get();
     }
@@ -60,7 +60,7 @@ public class UserController {
     @PutMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void modifyUser(@PathVariable("userId") Long userId,
-                           @RequestBody @Validated(UserDto.Update.class) UserDto dto) throws StatusException {
+                           @RequestBody @Validated(UserDto.Update.class) UserDto dto) throws RestException {
         userDaoService.modify(userId, dto);
     }
 

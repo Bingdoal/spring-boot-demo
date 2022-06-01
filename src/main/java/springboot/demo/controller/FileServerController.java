@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springboot.demo.dto.FileCreateDto;
 import springboot.demo.dto.FileDto;
-import springboot.demo.middleware.exception.StatusException;
+import springboot.demo.middleware.exception.RestException;
 import springboot.demo.service.FileServerService;
 
 import java.io.IOException;
@@ -24,13 +24,13 @@ public class FileServerController {
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
-    public List<FileDto> listPath(@RequestParam(value = "path", defaultValue = "/") String path) throws StatusException {
+    public List<FileDto> listPath(@RequestParam(value = "path", defaultValue = "/") String path) throws RestException {
         return fileServerService.getList(path);
     }
 
     @PostMapping("/createFolder")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public FileCreateDto createFolder(@RequestParam(value = "path") String path) throws StatusException {
+    public FileCreateDto createFolder(@RequestParam(value = "path") String path) throws RestException {
         return fileServerService.createFolder(path);
     }
 
@@ -38,7 +38,7 @@ public class FileServerController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public FileCreateDto uploadFile(@RequestParam(value = "path") String path,
                                     @RequestPart(value = "filename", required = false) String filename,
-                                    @RequestPart(value = "file") MultipartFile file) throws StatusException {
+                                    @RequestPart(value = "file") MultipartFile file) throws RestException {
         try {
             String uploadName = file.getOriginalFilename();
             if (filename != null) {
@@ -47,19 +47,19 @@ public class FileServerController {
 
             return fileServerService.upload(path, uploadName, file.getBytes());
         } catch (IOException e) {
-            throw new StatusException(400, "File upload failed");
+            throw new RestException(400, "File upload failed");
         }
     }
 
     @DeleteMapping("/remove")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePath(@RequestParam(value = "path") String path) throws StatusException {
+    public void deletePath(@RequestParam(value = "path") String path) throws RestException {
         fileServerService.delete(path);
     }
 
     @GetMapping("/download")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> download(@RequestParam(value = "path") String path) throws StatusException {
+    public ResponseEntity<Resource> download(@RequestParam(value = "path") String path) throws RestException {
         ByteArrayResource resource = fileServerService.download(path);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(ContentDisposition.builder("attachment")

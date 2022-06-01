@@ -26,6 +26,10 @@ server:
 swagger:
   enable: true
 
+grpc:
+  server:
+    port: 9090
+
 graphql:
   tools:
     schema-location-pattern: "graphql/*.graphql"
@@ -38,7 +42,7 @@ graphql:
   playground:
     enabled: false
   voyager:
-    enabled: true
+    enabled: false
 
 spring:
   main:

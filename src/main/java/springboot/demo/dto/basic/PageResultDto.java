@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
-import springboot.demo.middleware.exception.StatusException;
+import springboot.demo.middleware.exception.RestException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class PageResultDto<T> {
     private List<T> content;
     private PageDto pageable;
 
-    public PageResultDto(Page pageResult, Class<T> convertTo) throws StatusException {
+    public PageResultDto(Page pageResult, Class<T> convertTo) throws RestException {
         List<T> list = new ArrayList<>();
         for (Object item : pageResult.getContent()) {
             list.add(convertObject(item, convertTo));
@@ -33,13 +33,13 @@ public class PageResultDto<T> {
     }
 
 
-    private T convertObject(Object obj, Class<T> convertTo) throws StatusException {
+    private T convertObject(Object obj, Class<T> convertTo) throws RestException {
         try {
             T newObj = convertTo.getDeclaredConstructor().newInstance();
             BeanUtils.copyProperties(obj, newObj);
             return newObj;
         } catch (Exception e) {
-            throw new StatusException(500, e.getMessage());
+            throw new RestException(500, e.getMessage());
         }
     }
 }

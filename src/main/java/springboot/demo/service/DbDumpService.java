@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import springboot.demo.dto.CmdResultDto;
-import springboot.demo.middleware.exception.StatusException;
+import springboot.demo.middleware.exception.RestException;
 import springboot.demo.utils.properties.DatasourceInfo;
 import springboot.demo.utils.properties.InfluxInfo;
 
@@ -24,9 +24,9 @@ public class DbDumpService {
     private final Lock postgresLock = new ReentrantLock();
     private final Lock influxdbLock = new ReentrantLock();
 
-    public void dumpPostgres(String outputFile) throws StatusException {
+    public void dumpPostgres(String outputFile) throws RestException {
         if (!postgresLock.tryLock()) {
-            throw new StatusException(400, "PostgreSQL dump is running...");
+            throw new RestException(400, "PostgreSQL dump is running...");
         }
         try {
             String setEnv;
@@ -44,25 +44,25 @@ public class DbDumpService {
             }
             CmdResultDto resultDto = cmdExecuteService.execute(cmd);
             if (!resultDto.isSuccess()) {
-                throw new StatusException(500, "Dump postgres failed: "
+                throw new RestException(500, "Dump postgres failed: "
                         + resultDto.getExitCode() + ": "
                         + resultDto.getError());
             }
-        } catch (StatusException ex) {
+        } catch (RestException ex) {
             throw ex;
         } catch (Exception e) {
-            throw new StatusException(500, "Dump postgres failed: " + e.getMessage());
+            throw new RestException(500, "Dump postgres failed: " + e.getMessage());
         } finally {
             postgresLock.unlock();
         }
     }
 
-    public void dumpInfluxdb(String outputFile) throws StatusException {
+    public void dumpInfluxdb(String outputFile) throws RestException {
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-            throw new StatusException(500, "Influx dump cli not support on Windows");
+            throw new RestException(500, "Influx dump cli not support on Windows");
         }
         if (!influxdbLock.tryLock()) {
-            throw new StatusException(400, "InfluxDB dump is running...");
+            throw new RestException(400, "InfluxDB dump is running...");
         }
         try {
             String dumpDir = "influx_dump_" + System.currentTimeMillis();
@@ -73,14 +73,14 @@ public class DbDumpService {
             cmd += " && rm -rf " + dumpDir;
             CmdResultDto resultDto = cmdExecuteService.execute(cmd);
             if (!resultDto.isSuccess()) {
-                throw new StatusException(500, "Dump influxdb failed: "
+                throw new RestException(500, "Dump influxdb failed: "
                         + resultDto.getExitCode() + ": "
                         + resultDto.getError());
             }
-        } catch (StatusException ex) {
+        } catch (RestException ex) {
             throw ex;
         } catch (Exception e) {
-            throw new StatusException(500, "Dump influxdb failed: " + e.getMessage());
+            throw new RestException(500, "Dump influxdb failed: " + e.getMessage());
         } finally {
             influxdbLock.unlock();
         }
