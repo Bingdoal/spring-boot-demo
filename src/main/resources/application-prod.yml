@@ -1,7 +1,7 @@
 logging:
   level:
     root: INFO
-    springboot.test: ${LOGGER_LEVEL:INFO}
+    springboot.demo: ${LOGGER_LEVEL:INFO}
 server:
   port: ${SERVER_PORT:8080}
 

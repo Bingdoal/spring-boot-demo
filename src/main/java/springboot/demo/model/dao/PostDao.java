@@ -6,6 +6,11 @@ import org.springframework.data.querydsl.binding.QuerydslBindings;
 import springboot.demo.model.entity.Post;
 import springboot.demo.model.entity.QPost;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 public interface PostDao extends DaoBase<Post, Long>, QuerydslBinderCustomizer<QPost> {
     @Override
     default void customize(final QuerydslBindings bindings, final QPost qEntity) {
@@ -17,6 +22,14 @@ public interface PostDao extends DaoBase<Post, Long>, QuerydslBinderCustomizer<Q
                 return field.isNull();
             } else {
                 return field.containsIgnoreCase(value);
+            }
+        });
+        bindings.bind(qEntity.creationTime).all((path, value) -> {
+            List<? extends LocalDateTime> dates = new ArrayList<>(value);
+            if (dates.size() == 1) {
+                return Optional.of(path.eq(dates.get(0)));
+            } else {
+                return Optional.of(path.between(dates.get(0), dates.get(1)));
             }
         });
     }

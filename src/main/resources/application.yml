@@ -4,17 +4,13 @@
 logging:
   level:
     root: INFO
-    springboot.test: DEBUG
+    springboot.demo: DEBUG
     com.zaxxer.hikari: WARN
     org.hibernate: WARN
     org.flywaydb.core: WARN
     org.apache.catalina: WARN
     org.springframework.boot.devtools: WARN
     springfox.documentation.swagger: ERROR
-    springboot:
-      demo:
-        middleware:
-          filter: DEBUG
   pattern:
     console: "%d{YYYY-MM-dd HH:mm:ss} %-5level [%8.15thread] %-120.120(%logger{100}.%method %line) %n%m%n"
 
