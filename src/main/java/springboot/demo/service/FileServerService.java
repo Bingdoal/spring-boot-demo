@@ -25,7 +25,6 @@ public class FileServerService {
     private RestTemplate restTemplate;
     @Autowired
     private HttpFileServerInfo httpFileServerInfo;
-    @Autowired
     private ObjectMapper objectMapper;
 
     public List<FileDto> getList(String path) throws RestException {

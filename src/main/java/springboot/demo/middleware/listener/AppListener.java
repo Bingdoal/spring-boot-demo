@@ -1,4 +1,4 @@
-package springboot.demo.config;
+package springboot.demo.middleware.listener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.flywaydb.core.Flyway;
