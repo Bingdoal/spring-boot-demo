@@ -42,75 +42,82 @@ import java.time.format.DateTimeFormatter;
 @Configuration
 public class AppConfig {
 
-    @Bean
-    public LocalValidatorFactoryBean localValidatorFactoryBean(MessageSource messageSource) {
-        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
-        bean.getValidationPropertyMap().put("hibernate.validator.fail_fast", "true");
-        bean.setValidationMessageSource(messageSource);
-        return bean;
-    }
+  @Bean
+  public LocalValidatorFactoryBean localValidatorFactoryBean(MessageSource messageSource) {
+    LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+    bean.getValidationPropertyMap().put("hibernate.validator.fail_fast", "true");
+    bean.setValidationMessageSource(messageSource);
+    return bean;
+  }
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+  }
 
-    @Bean
-    public RestTemplate restTemplate() {
-        final RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getMessageConverters()
-                .add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
-        return restTemplate;
-    }
+  @Bean
+  public RestTemplate restTemplate() {
+    final RestTemplate restTemplate = new RestTemplate();
+    restTemplate.getMessageConverters()
+        .add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+    return restTemplate;
+  }
 
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
-        PropertySourcesPlaceholderConfigurer propsConfig
-            = new PropertySourcesPlaceholderConfigurer();
-        propsConfig.setLocation(new ClassPathResource("git.properties"));
-        propsConfig.setIgnoreResourceNotFound(true);
-        propsConfig.setIgnoreUnresolvablePlaceholders(true);
-        return propsConfig;
-    }
+  @Bean
+  public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+    PropertySourcesPlaceholderConfigurer propsConfig
+        = new PropertySourcesPlaceholderConfigurer();
+    propsConfig.setLocation(new ClassPathResource("git.properties"));
+    propsConfig.setIgnoreResourceNotFound(true);
+    propsConfig.setIgnoreUnresolvablePlaceholders(true);
+    return propsConfig;
+  }
 
-    @Bean
-    @Primary
-    ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-        mapper.registerModule(new Jdk8Module());
-        final JavaTimeModule javaTimeModule = new JavaTimeModule();
-        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
-        javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
+  @Bean
+  @Primary
+  public ObjectMapper objectMapper() {
+    final JavaTimeModule javaTimeModule = new JavaTimeModule();
+    javaTimeModule.addSerializer(LocalDateTime.class,
+        new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+    javaTimeModule.addDeserializer(LocalDateTime.class,
+        new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+    javaTimeModule.addSerializer(LocalDate.class,
+        new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    javaTimeModule.addDeserializer(LocalDate.class,
+        new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    javaTimeModule.addSerializer(LocalTime.class,
+        new LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
+    javaTimeModule.addDeserializer(LocalTime.class,
+        new LocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
-        mapper.registerModules(javaTimeModule, new StringTrimmerModule());
-        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        return mapper;
-    }
-    static class StringTrimmerModule extends SimpleModule {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+    mapper.registerModules(new Jdk8Module(), javaTimeModule, new StringTrimmerModule());
+    mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    return mapper;
+  }
+
+  static class StringTrimmerModule extends SimpleModule {
+
+    private static final long serialVersionUID = 1L;
+
+    public StringTrimmerModule() {
+      addDeserializer(String.class, new StdScalarDeserializer<String>(String.class) {
         private static final long serialVersionUID = 1L;
 
-        public StringTrimmerModule() {
-            addDeserializer(String.class, new StdScalarDeserializer<String>(String.class) {
-                private static final long serialVersionUID = 1L;
-
-                @Override
-                public String deserialize(final JsonParser jsonParser, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
-                    final String stringValue = jsonParser.getValueAsString();
-                    return (stringValue == null) ? null : stringValue.trim();
-                }
-            });
+        @Override
+        public String deserialize(final JsonParser jsonParser, final DeserializationContext ctxt)
+            throws IOException, JsonProcessingException {
+          final String stringValue = jsonParser.getValueAsString();
+          return (stringValue == null) ? null : stringValue.trim();
         }
+      });
     }
+  }
 
-    @Bean
-    JPAQueryFactory jpaQueryFactory(EntityManager entityManager) {
-        return new JPAQueryFactory(entityManager);
-    }
+  @Bean
+  public JPAQueryFactory jpaQueryFactory(EntityManager entityManager) {
+    return new JPAQueryFactory(entityManager);
+  }
 }

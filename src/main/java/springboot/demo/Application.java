@@ -9,7 +9,6 @@ import springboot.demo.utils.properties.ServerInfo;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication()
-@EnableWebMvc
 @EnableSwagger2
 @Slf4j
 public class Application {
