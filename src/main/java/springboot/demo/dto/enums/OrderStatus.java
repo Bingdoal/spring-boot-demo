@@ -1,12 +1,11 @@
 package springboot.demo.dto.enums;
 
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import springboot.demo.dto.enums.base.ConverterBase;
 import springboot.demo.dto.enums.base.EnumBase;
 
-@Getter
 @AllArgsConstructor
 public enum OrderStatus implements EnumBase<Integer> {
   SUCCESS(1),
@@ -14,9 +13,17 @@ public enum OrderStatus implements EnumBase<Integer> {
   COMPLETE(3),
   CANCEL(-1);
 
+  @JsonValue
   private final int value;
 
+  @Override
+  public Integer getValue() {
+    return value;
+  }
+
+
   public static class Converter extends ConverterBase<OrderStatus, Integer> {
+
     public Converter() {
       super(OrderStatus.class);
     }
