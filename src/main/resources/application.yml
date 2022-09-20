@@ -2,6 +2,7 @@
 #  Logger
 # =======================
 logging:
+  config: classpath:logback-spring.xml
   level:
     root: INFO
     springboot.demo: DEBUG

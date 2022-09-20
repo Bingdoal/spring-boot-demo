@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>
+<!--這邊是 logging 寫入檔案的設定，console 相關則放在 application.yml-->
+<!-- <configuration> 的 scan 設定為 true 使配置改變時可以重新載入配置文件 -->
+<configuration scan="false">
+  <!--讀取 application.yml 的屬性進來-->
+  <springProperty scope="context" name="serviceName" source="spring.application.name"/>
+
+  <!-- 引用 Spring Boot 對 Logback 的預設配置 -->
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
+  <!-- 設定輸出 file 時的相關設定 -->
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>DEBUG</level>
+    </filter>
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <fileNamePattern>./log/%d{yyyy-MM}/${serviceName}-%d{MM-dd}-%i.log</fileNamePattern>
+      <maxHistory>180</maxHistory>
+      <maxFileSize>100MB</maxFileSize>
+    </rollingPolicy>
+    <!-- 設定寫入 Log File 的格式設定 -->
+    <encoder>
+      <charset>utf-8</charset>
+      <Pattern><![CDATA[
+        [%d{yyyy-MM-dd'T'HH:mm:ss}][%p][${serviceName},%X{traceId:-},%X{spanId:-}][%t][%C:%line]: %msg%n
+      ]]></Pattern>
+    </encoder>
+  </appender>
+
+  <!-- 透過 AsyncAppender 使 Log 可以以非同步的方式輸出，以增加寫入效能 -->
+  <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+    <!-- 修改 queue 的大小，這個會影響非同步寫入時的效能 -->
+    <queueSize>512</queueSize>
+    <!-- 載入名字為 FILE 的 <appender> -->
+    <appender-ref ref="FILE"/>
+  </appender>
+
+  <!-- 配置載入位置 -->
+  <root>
+    <appender-ref ref="ASYNC"/>
+  </root>
+</configuration>
