@@ -18,12 +18,13 @@ logging:
 management:
   endpoint:
     health:
+      show-details: ALWAYS
       probes:
         enabled: true
   endpoints:
     web:
       exposure:
-        include: health,env,flyway,info,mappings,scheduledtasks,configprops,beans
+        include: "*"
 
 server:
   port: 8080
