@@ -1,27 +1,11 @@
 package springboot.demo.config;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.grpc.ServerInterceptor;
+import java.nio.charset.StandardCharsets;
+import javax.persistence.EntityManager;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -29,15 +13,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.client.RestTemplate;
-
-import javax.persistence.EntityManager;
-import javax.servlet.http.Part;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 @Configuration
 public class AppConfig {
@@ -64,7 +39,7 @@ public class AppConfig {
   }
 
   @Bean
-  public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+  public PropertySourcesPlaceholderConfigurer placeholderConfigure() {
     PropertySourcesPlaceholderConfigurer propsConfig
         = new PropertySourcesPlaceholderConfigurer();
     propsConfig.setLocation(new ClassPathResource("git.properties"));
@@ -73,48 +48,6 @@ public class AppConfig {
     return propsConfig;
   }
 
-  @Bean
-  @Primary
-  public ObjectMapper objectMapper() {
-    final JavaTimeModule javaTimeModule = new JavaTimeModule();
-    javaTimeModule.addSerializer(LocalDateTime.class,
-        new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-    javaTimeModule.addDeserializer(LocalDateTime.class,
-        new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-    javaTimeModule.addSerializer(LocalDate.class,
-        new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-    javaTimeModule.addDeserializer(LocalDate.class,
-        new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-    javaTimeModule.addSerializer(LocalTime.class,
-        new LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
-    javaTimeModule.addDeserializer(LocalTime.class,
-        new LocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
-
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-    mapper.registerModules(new Jdk8Module(), javaTimeModule, new StringTrimmerModule());
-    mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    return mapper;
-  }
-
-  static class StringTrimmerModule extends SimpleModule {
-
-    private static final long serialVersionUID = 1L;
-
-    public StringTrimmerModule() {
-      addDeserializer(String.class, new StdScalarDeserializer<String>(String.class) {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public String deserialize(final JsonParser jsonParser, final DeserializationContext ctxt)
-            throws IOException, JsonProcessingException {
-          final String stringValue = jsonParser.getValueAsString();
-          return (stringValue == null) ? null : stringValue.trim();
-        }
-      });
-    }
-  }
 
   @Bean
   public JPAQueryFactory jpaQueryFactory(EntityManager entityManager) {

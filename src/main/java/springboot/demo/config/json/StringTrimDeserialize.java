@@ -1,0 +1,16 @@
+package springboot.demo.config.json;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import java.io.IOException;
+
+public class StringTrimDeserialize extends JsonDeserializer<String> {
+
+  @Override
+  public String deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+      throws IOException {
+    final String stringValue = jsonParser.getValueAsString();
+    return (stringValue == null) ? null : stringValue.trim();
+  }
+}
