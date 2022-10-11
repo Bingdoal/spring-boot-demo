@@ -33,4 +33,4 @@
   + [ ] Subscription
   + [ ] Test
   + [ ] Upload file
-+ [ ] gRpc
++ [x] gRpc

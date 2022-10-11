@@ -99,6 +99,7 @@ spring:
     open-in-view: true
     properties:
       hibernate:
+        format_sql: true
         default_schema: testt
         dialect: org.hibernate.dialect.PostgreSQLDialect
         temp:

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import springboot.demo.service.TransactionalTestService;
 import springboot.demo.utils.properties.DatasourceInfo;
 import springboot.demo.utils.properties.FlywayInfo;
 
