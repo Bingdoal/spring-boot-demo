@@ -1,6 +1,9 @@
 # Spring boot demo
-+ 收集各種 Spring boot 的框架用法
+
+收集各種 Spring boot 的框架用法
+
 + [x] 基本 Configuration
+  + [x] Custom Jackson mapper 
 + [x] 基本 Swagger 設定
 + [ ] Security
   + [x] 基本設定

@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Objects;
+import springboot.demo.utils.TimeUtils;
 
 public class LocalDateTImeTsSerializer extends JsonSerializer<LocalDateTime> {
 
@@ -16,7 +16,7 @@ public class LocalDateTImeTsSerializer extends JsonSerializer<LocalDateTime> {
       JsonGenerator jsonGenerator,
       SerializerProvider serializerProvider) throws IOException {
     if (Objects.nonNull(localDateTime)) {
-      jsonGenerator.writeNumber(localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli());
+      jsonGenerator.writeNumber(localDateTime.toInstant(TimeUtils.ZONE_OFFSET).toEpochMilli());
     } else {
       jsonGenerator.writeNumber(0L);
     }
