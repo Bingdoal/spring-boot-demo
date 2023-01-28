@@ -263,7 +263,7 @@
               <goal>process</goal>
             </goals>
             <configuration>
-              <outputDirectory>.apt_generated</outputDirectory>
+              <outputDirectory>apt_generated</outputDirectory>
               <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
             </configuration>
           </execution>
@@ -274,7 +274,7 @@
         <groupId>org.xolstice.maven.plugins</groupId>
         <artifactId>protobuf-maven-plugin</artifactId>
         <configuration>
-          <outputDirectory>.grpc_generated</outputDirectory>
+          <outputDirectory>grpc_generated</outputDirectory>
           <clearOutputDirectory>false</clearOutputDirectory>
           <checkStaleness>false</checkStaleness>
 
@@ -301,6 +301,7 @@
         <configuration>
           <useNativeGit>true</useNativeGit>
           <dateFormat>yyyy-MM-dd HH:mm:ss Z</dateFormat>
+          <useBranchNameFromBuildEnvironment>true</useBranchNameFromBuildEnvironment>
         </configuration>
       </plugin>
     </plugins>

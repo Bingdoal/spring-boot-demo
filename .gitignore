@@ -1,6 +1,6 @@
 target/
-.apt_generated/
-.grpc_generated/
+apt_generated/
+grpc_generated/
 .idea/
 *.iml
 *.jar
