@@ -54,6 +54,8 @@ graphql:
     enabled: false
 
 spring:
+  profiles:
+    active: dev
   main:
     web-application-type: servlet
   messages:
